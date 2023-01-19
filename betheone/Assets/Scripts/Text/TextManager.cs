@@ -19,9 +19,11 @@ public class TextManager : MonoBehaviour
     public static int index = 0;
     public string[] str;
     char[] chars;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = this.gameObject.GetComponent<AudioSource>();
         tf.text = "";
         switch (GameStats.Stage)
         {
@@ -109,6 +111,8 @@ public class TextManager : MonoBehaviour
                 }
                 else
                 {
+                     this.audioSource.Stop();
+                    this.audioSource.Play();
                     textObj.text += chars[currentChar].ToString();
                     currentChar++;
                     timer = characterTime;
