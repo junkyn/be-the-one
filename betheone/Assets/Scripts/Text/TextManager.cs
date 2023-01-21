@@ -21,16 +21,18 @@ public class TextManager : MonoBehaviour
     char[] chars;
     AudioSource audioSource;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
+        index = 0;
         audioSource = this.gameObject.GetComponent<AudioSource>();
         tf.text = "";
         switch (GameStats.Stage)
         {
             case 0:
-                Debug.Log(0);
-                str = new string[] { ".....","뭐지?","혼란스럽다" };
-                Debug.Log(str[1]);
+                str = new string[] { ".....","뭐지? 머리가 깨질 것만 같다.","아무것도 기억이 나지 않아." , "...", "다리도 움직일 수 없어.", "어두운 방 침대에 누워있는 것 같은데 손에 있는 휴대폰을 조작하는 것 말고는", "아무것도 할 수 없는건가?"};
+                break;
+            case 1:
+                str = new string[] { "다행히 이 휴대폰의 주인은 나인 것 같다.", "우선 내가 누군지부터 알아볼까?" };
                 break;
         }
         index = 0;
@@ -88,7 +90,8 @@ public class TextManager : MonoBehaviour
             tf.text = "";
             TextManager.isTyping = false;
             wait = true;
-            Destroy(background);
+            GameStats.Stage++;
+            background.SetActive(false);
         }
         tf.text = "";
         TextManager.isTyping = false;

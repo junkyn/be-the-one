@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ButtonCtrl : MonoBehaviour
 {
+    public GameObject textObj;
     private SpriteRenderer sprite;
     // Start is called before the first frame update
     void Start()
@@ -14,18 +15,21 @@ public class ButtonCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!textObj.activeSelf)
         {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(pos,Vector2.zero, 0f);
-            if(hit.collider != null)
+            if (Input.GetMouseButtonDown(0))
             {
-                GameObject click_obj = hit.transform.gameObject;
-                Debug.Log(click_obj.name);
-                if (click_obj.tag == "Application")
+                Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+                if (hit.collider != null)
                 {
-                    sprite = click_obj.GetComponent<SpriteRenderer>();
-                    sprite.color = new Color(1f,1f,1f,0.6f);
+                    GameObject click_obj = hit.transform.gameObject;
+                    Debug.Log(click_obj.name);
+                    if (click_obj.tag == "Application")
+                    {
+                        sprite = click_obj.GetComponent<SpriteRenderer>();
+                        sprite.color = new Color(1f, 1f, 1f, 0.6f);
+                    }
                 }
             }
         }
