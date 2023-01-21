@@ -70,20 +70,21 @@ public class TextManager : MonoBehaviour
             if (turn)
             {
                 k += 0.01f;
-                yield return new WaitForSeconds(0.01f*Time.deltaTime);
+                yield return new WaitForSeconds(0.2f*Time.deltaTime);
                 if (k >= 1f)
                     turn = false;
             }
             else
             {
                 k -= 0.01f;
-                yield return new WaitForSeconds(0.01f * Time.deltaTime);
+                yield return new WaitForSeconds(0.2f * Time.deltaTime);
                 if (k <= 0f)
                     turn = true;
             }
             arrow.color = new Color(1f, 1f, 1f, k);
 
         }
+        arrow.color = new Color(1f, 1f, 1f, 0);
         index++;
         if(index == str.Length)
         {
