@@ -24,4 +24,5 @@ Unity 2D Game project for Winter Vacation in 2022
 
 
 2023/01/21
+
 잠금화면 제작, 날짜, 시간 흐르는 기능 추가
