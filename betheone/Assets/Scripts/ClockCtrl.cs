@@ -7,7 +7,7 @@ public class ClockCtrl : MonoBehaviour
     float _sec = 0;
     int _Min = 0;
     int _Hour = 2;
-    public TextMeshPro Timetxt;
+    public TextMeshProUGUI Timetxt;
     // Start is called before the first frame update
     void Start()
     {

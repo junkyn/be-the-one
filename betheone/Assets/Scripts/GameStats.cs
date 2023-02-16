@@ -7,15 +7,4 @@ public class GameStats : MonoBehaviour
 {
     public static int Stage = 0;
     public static int Date = 32;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
