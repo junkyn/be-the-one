@@ -86,7 +86,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -225,9 +225,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 82550100
-      m_LastClickedID: 0
-      m_ExpandedIDs: 2272ffff5891ffff5297ffff7697ffff7897ffff7a97ffff7e97ffff54bbffffd2c1ffff46d2ffffd0f6ffff1cf7ffff00f9ffff2afbffffd860000006610000a4610000866200004e63000064630000a8630000fe630000b664000076650000f8650000
+      m_SelectedIDs: 96620000
+      m_LastClickedID: 25238
+      m_ExpandedIDs: 2afbffffec620000ba6300007a640000046500005865000094650000fe650000a4660000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -652,8 +652,8 @@ MonoBehaviour:
     y: 0
     width: 672
     height: 570
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -727,22 +727,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\AZOTh\Desktop\be-the-one-main\betheone
+  m_LastProjectPath: C:\Users\AZOTh\Desktop\be-the-one\betheone
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5a670000
-    m_LastClickedID: 26458
-    m_ExpandedIDs: 000000004c67000000ca9a3bffffff7f
+    m_SelectedIDs: ee670000
+    m_LastClickedID: 26606
+    m_ExpandedIDs: 00000000de670000ea67000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -770,7 +770,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004c67000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000de670000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -795,8 +795,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 82550100
-    m_LastClickedInstanceID: 87426
+    m_SelectedInstanceIDs: 96620000
+    m_LastClickedInstanceID: 25238
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300001e600000000000005a820000ce6200009e610000388e0000
     m_RenameOverlay:

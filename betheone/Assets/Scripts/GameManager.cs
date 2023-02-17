@@ -14,19 +14,27 @@ public class GameManager : MonoBehaviour
     WaitForSeconds appDelay;
 
     [Header("Lock Screen")]
-    [SerializeField] RectTransform screenLocked, screenMain;
     [SerializeField] GameObject clickBlock;
+    [SerializeField] RectTransform screenLocked, screenMain;
 
     [SerializeField] Image iconLock;
     [SerializeField] Sprite spriteUnlock;
     [SerializeField] TextMeshProUGUI touchToUnlock;
 
+    [Header("Timer")]
+    [SerializeField] TextMeshProUGUI timerText;
+    public float time = 0;
+    int currentMinute = 0, currentHour = 2;
+    new WaitForSeconds timer;
+
+    /*
     [Header("Game Stats")]
     int _date;
     int month = 7;
     string[] daylist = { "월", "화", "수", "목", "금", "토", "일" };
     string day;
     [SerializeField] TextMeshProUGUI dateText, dayText;
+    */
 
     [Header("Monologue")]
     [SerializeField] MonologueManager monologueManager;
@@ -47,6 +55,13 @@ public class GameManager : MonoBehaviour
     [Header("Call")]
     [SerializeField] TextMeshProUGUI callDialText;
 
+    [Header("Message")]
+    [SerializeField] ChatTrigger chatTrigger;
+    [SerializeField] GameObject chatPrefab;
+    [SerializeField] TextMeshProUGUI chatName;
+    [SerializeField] Transform chatContent;
+    [SerializeField] ScrollRect chatScrollRect;
+
     [Header("Setting")]
     [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource fx;
@@ -57,7 +72,9 @@ public class GameManager : MonoBehaviour
     {
         touchToUnlock.DOColor(transparent, 1).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
 
-        DateSet();
+        //DateSet();
+
+        timer = new WaitForSeconds(1);
 
         monologueTrigger.TriggerMonologue("Intro");
 
@@ -67,7 +84,7 @@ public class GameManager : MonoBehaviour
         galleryZoomedPos = galleryZoomed.transform.position;
     }
 
-    //날짜를 업데이트합니다.
+    /*날짜를 업데이트합니다.
     void DateSet()
     {
         _date = GameStats.Date;
@@ -80,13 +97,45 @@ public class GameManager : MonoBehaviour
         dateText.text = month + "월 " + _date + "일";
         dayText.text = day + "요일";
     }
+    */
 
-    public void Unlock()
+    //잠금이 해제된 시점부터 시간을 업데이트합니다.
+    IEnumerator TimeCheck()
     {
-        StartCoroutine(UnlockCoroutine());
+        yield return timer;
+        time++;
+
+        if (time >= 60)
+        {
+            if (currentMinute < 60)
+            {
+                currentMinute++;
+                if (currentMinute >= 60)
+                {
+                    currentHour++;
+                    currentMinute = 0;
+                }
+                time = 0;
+            }
+            string minute = string.Empty;
+            if (currentMinute < 10)
+                minute = "0" + currentMinute.ToString();
+            else
+                minute = currentMinute.ToString();
+
+            timerText.text = currentHour.ToString() + ":" + minute;
+        }
+
+        StartCoroutine(TimeCheck());
     }
 
     //잠금을 해제합니다.
+    public void Unlock()
+    {
+        clickBlock.SetActive(true);
+        StartCoroutine(UnlockCoroutine());
+    }
+
     IEnumerator UnlockCoroutine()
     {
         iconLock.sprite = spriteUnlock;
@@ -101,6 +150,9 @@ public class GameManager : MonoBehaviour
 
         yield return appDelay;
         screenLocked.gameObject.SetActive(false);
+
+        clickBlock.SetActive(false);
+        StartCoroutine(TimeCheck());
     }
 
     //앱을 실행합니다.
@@ -226,6 +278,63 @@ public class GameManager : MonoBehaviour
             callDialText.text = callDialText.text.Remove(callDialText.text.Length - 1);
     }
 
+    //메시지 앱에서 채팅창으로 이동합니다.
+    public void MessageChatActivate(string name)
+    {
+        clickBlock.SetActive(true);
+        chatTrigger.TriggerChat(name);
+    }
+
+    //채팅 내용을 불러옵니다.
+    public IEnumerator MessageChatUpdate(Chat chat)
+    {
+        chatName.text = "< " + chat.name;
+        for (int i = 0; i < chat.sentences.Count; i++)
+        {
+            GameObject newChat = Instantiate(chatPrefab, chatContent);
+            newChat.GetComponent<TextMeshProUGUI>().text= chat.sentences[i];
+            newChat.transform.DOScale(Vector3.one, 0);
+
+            if ((i % 2).Equals(0))
+                newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Left;
+            else
+                newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
+        }
+
+        Canvas.ForceUpdateCanvases();
+        chatScrollRect.verticalNormalizedPosition = 0;
+
+        screenCurrent.DOPivotX(1.5f, 0);
+        screenCurrent.DOMove(screenPos, .5f);
+
+        yield return appDelay;
+        clickBlock.SetActive(false);
+    }
+
+    public void MessageChatReply()
+    {
+
+    }
+
+    //메시지 앱에서 채팅창을 벗어납니다.
+    public void MessageChatDeactivate()
+    {
+        clickBlock.SetActive(true);
+        StartCoroutine(MessageChatDeactivateCoroutine());
+
+        for (int i = 0; i < chatContent.childCount; i++)
+            Destroy(chatContent.GetChild(i).gameObject);
+    }
+
+    IEnumerator MessageChatDeactivateCoroutine()
+    {
+        screenCurrent.DOPivotX(.5f, 0);
+        screenCurrent.DOMove(screenPos, .5f);
+
+        yield return appDelay;
+        clickBlock.SetActive(false);
+    }
+
     //설정을 변경합니다.
     public void Settings()
     {
@@ -242,10 +351,5 @@ public class GameManager : MonoBehaviour
             monologueManager.typeSpeed = .01f;
             monologueManager.TypeSpeedUpdate();
         }
-    }
-
-    void Update()
-    {
-        
     }
 }
