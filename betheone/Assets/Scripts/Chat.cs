@@ -9,4 +9,6 @@ public class Chat
 
     [TextArea(3, 10)]
     public List<string> sentences;
+
+    public bool replyable = true;
 }

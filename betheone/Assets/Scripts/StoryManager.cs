@@ -5,36 +5,36 @@ using UnityEngine;
 
 public class StoryManager : MonoBehaviour
 {
-    public GameObject JiHyeMessage;
-    // Start is called before the first frame update
+    public int day = 1;
+
     [SerializeField] MonologueTrigger monologueTrigger;
 
-    public void IDScreenEvent()
-    {
-        if (GameStats.Stage == 0)
-        {
-            monologueTrigger.TriggerMonologue("CheckName");
-        }
-    }
+    [SerializeField] GameObject JiHyeMessage;
+
     public void FirstDisableID()
     {
-        StartCoroutine(FirstDayEvent());
-    }
-    IEnumerator FirstDayEvent()
-    {
-        if (GameStats.Stage == 0)
+        if (GameStats.Instance.Stage.Equals(0))
         {
-            GameStats.Stage = 1;
-            yield return new WaitForSeconds(3f);
-            {
-                monologueTrigger.TriggerMonologue("GetMessage");
-                JiHyeMessage.SetActive(true);
-            }
+            monologueTrigger.TriggerMonologue("CheckName");
+            StartCoroutine(FirstDayEvent());
         }
     }
+
+    IEnumerator FirstDayEvent()
+    {
+        yield return new WaitForSeconds(3f);
+        {
+            monologueTrigger.TriggerMonologue("GetMessage");
+            JiHyeMessage.SetActive(true);
+        }
+
+        GameStats.Instance.Stage = 1;
+    }
+
     public void OpenFirstJiHye()
     {
         monologueTrigger.TriggerMonologue("FirstDayJiHye");
-        GameStats.Stage = 2;
+
+        GameStats.Instance.Stage = 2;
     }
 }

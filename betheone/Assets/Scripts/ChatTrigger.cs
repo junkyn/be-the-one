@@ -14,7 +14,8 @@ public class ChatTrigger : MonoBehaviour
             if (chats[i].name.Equals(name))
             {
                 StartCoroutine(gameManager.MessageChatUpdate(chats[i]));
-                if(name == "¼ÕÁöÇı"&& GameStats.Stage == 1)
+
+                if(name.Equals("¼ÕÁöÇı") && GameStats.Instance.Stage.Equals(1))
                 {
                     storyManager.OpenFirstJiHye();
                 }

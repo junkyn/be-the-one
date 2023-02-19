@@ -12,14 +12,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] RectTransform screenCurrent;
     Vector3 screenPos;
     WaitForSeconds appDelay;
+    [SerializeField] Image fadeImage;
+
+    [Header("Story")]
+    [SerializeField] StoryManager storyManager;
 
     [Header("Lock Screen")]
     [SerializeField] GameObject clickBlock;
     [SerializeField] RectTransform screenLocked, screenMain;
 
     [SerializeField] Image iconLock;
-    [SerializeField] Sprite spriteUnlock;
+    [SerializeField] Sprite spriteUnlock, spriteLock;
     [SerializeField] TextMeshProUGUI touchToUnlock;
+
+    [SerializeField] TextMeshProUGUI dateText, dayText;
 
     [Header("Timer")]
     [SerializeField] TextMeshProUGUI timerText;
@@ -33,7 +39,6 @@ public class GameManager : MonoBehaviour
     int month = 7;
     string[] daylist = { "월", "화", "수", "목", "금", "토", "일" };
     string day;
-    [SerializeField] TextMeshProUGUI dateText, dayText;
     */
 
     [Header("Monologue")]
@@ -57,10 +62,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Message")]
     [SerializeField] ChatTrigger chatTrigger;
+    [SerializeField] Chat chatCurrent;
     [SerializeField] GameObject chatPrefab;
     [SerializeField] TextMeshProUGUI chatName;
     [SerializeField] Transform chatContent;
     [SerializeField] ScrollRect chatScrollRect;
+
+    [SerializeField] RectTransform chatRectTransform;
+    bool replying = false;
+    [SerializeField] Button replyButton;
+    [SerializeField] TextMeshProUGUI reply1, reply2, reply3;
 
     [Header("Setting")]
     [SerializeField] AudioSource bgm;
@@ -145,14 +156,34 @@ public class GameManager : MonoBehaviour
         screenLocked.DOPivotY(-.5f, 0);
         screenLocked.DOMove(screenPos, .5f);
         screenMain.gameObject.SetActive(true);
-        if(GameStats.Stage == 0)
+
+        if(GameStats.Instance.Stage.Equals(0))
             monologueTrigger.TriggerMonologue("Unlocked");
 
         yield return appDelay;
         screenLocked.gameObject.SetActive(false);
+        screenLocked.DOPivotY(.5f, 0);
+        screenLocked.DOMove(screenPos, 0);
 
         clickBlock.SetActive(false);
         StartCoroutine(TimeCheck());
+    }
+    
+    //잠금을 설정합니다.
+    void Lock()
+    {
+        iconLock.sprite = spriteLock;
+        screenLocked.gameObject.SetActive(true);
+
+        screenCurrent.DOPivotX(.5f, 0);
+        screenCurrent.DOMove(screenPos, 0);
+
+        screenCurrent.DOPivotY(1.5f, 0);
+        screenCurrent.DOMove(screenPos, 0);
+        screenCurrent.gameObject.SetActive(false);
+        screenCurrent.DOMove(screenPos, 0);
+
+        screenMain.gameObject.SetActive(false);
     }
 
     //앱을 실행합니다.
@@ -288,6 +319,11 @@ public class GameManager : MonoBehaviour
     //채팅 내용을 불러옵니다.
     public IEnumerator MessageChatUpdate(Chat chat)
     {
+        chatCurrent = chat;
+
+        for (int i = 0; i < chatContent.childCount; i++)
+            Destroy(chatContent.GetChild(0).gameObject);
+
         chatName.text = "< " + chat.name;
         for (int i = 0; i < chat.sentences.Count; i++)
         {
@@ -301,6 +337,11 @@ public class GameManager : MonoBehaviour
                 newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
         }
 
+        if (!chat.replyable)
+            replyButton.interactable = false;
+        else
+            replyButton.interactable = true;
+
         Canvas.ForceUpdateCanvases();
         chatScrollRect.verticalNormalizedPosition = 0;
 
@@ -313,7 +354,75 @@ public class GameManager : MonoBehaviour
 
     public void MessageChatReply()
     {
+        if (chatName.text.Equals("< 건국 정신병원"))
+            monologueTrigger.TriggerMonologue("Asylum");
+        else
+        {
+            if (!replying)
+            {
+                replying = true;
 
+                chatRectTransform.DOSizeDelta(new Vector2(0, -120), .5f).SetRelative();
+                replyButton.transform.DOMoveY(340, .5f).SetRelative();
+                replyButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "취소";
+
+                ReplyCase("< 손지혜");
+            }
+            else
+            {
+                replying = false;
+
+                chatRectTransform.DOSizeDelta(new Vector2(0, 120), .5f).SetRelative();
+                replyButton.transform.DOMoveY(-340, .5f).SetRelative();
+                replyButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "메시지 보내기";
+            }
+        }
+    }
+
+    void ReplyCase(string name)
+    { 
+        switch(name)
+        {
+            case "< 손지혜":
+                if (GameStats.Instance.Stage.Equals(2))
+                    ReplyGenerate("아니?", "(답장하지 않는다.)", "");
+                break;
+        }
+    }
+
+    void ReplyGenerate(string reply1Text, string reply2Text, string reply3Text)
+    {
+        reply2.transform.parent.gameObject.SetActive(true);
+        reply3.transform.parent.gameObject.SetActive(true);
+
+        reply1.text = reply1Text;
+        reply2.text = reply2Text;
+        reply3.text = reply3Text;
+
+        if (reply3.text.Equals(""))
+            reply3.transform.parent.gameObject.SetActive(false);
+        if (reply2.text.Equals(""))
+            reply2.transform.parent.gameObject.SetActive(false);
+    }
+
+    //답장을 보냅니다.
+    public void Reply(TextMeshProUGUI text)
+    {
+        string reply = text.text;
+        if (reply.Equals("(답장하지 않는다.)"))
+        {
+            chatCurrent.replyable = false;
+        }
+        else
+        {
+            chatCurrent.replyable = false;
+            chatCurrent.sentences.Add("-----------------------\n\n" + reply + "\n\n-----------------------");
+            StartCoroutine(MessageChatUpdate(chatCurrent));
+        }
+
+        MessageChatReply();
+        if (GameStats.Instance.Stage.Equals(2))
+            StartCoroutine(NextDay());
     }
 
     //메시지 앱에서 채팅창을 벗어납니다.
@@ -323,7 +432,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(MessageChatDeactivateCoroutine());
 
         for (int i = 0; i < chatContent.childCount; i++)
-            Destroy(chatContent.GetChild(i).gameObject);
+            Destroy(chatContent.GetChild(0).gameObject);
     }
 
     IEnumerator MessageChatDeactivateCoroutine()
@@ -351,5 +460,46 @@ public class GameManager : MonoBehaviour
             monologueManager.typeSpeed = .01f;
             monologueManager.TypeSpeedUpdate();
         }
+    }
+
+    IEnumerator NextDay()
+    {
+        fadeImage.gameObject.SetActive(true);
+        fadeImage.DOColor(new Color(0, 0, 0, 1), 4f);
+        yield return new WaitForSeconds(4.5f);
+
+        storyManager.day++;
+        dayText.text = "8월 " + storyManager.day.ToString() + "일";
+        switch(storyManager.day % 7)
+        {
+            case 1:
+                dateText.text = "화요일";
+                break;
+            case 2:
+                dateText.text = "수요일";
+                break;
+            case 3:
+                dateText.text = "목요일";
+                break;
+            case 4:
+                dateText.text = "금요일";
+                break;
+            case 5:
+                dateText.text = "토요일";
+                break;
+            case 6:
+                dateText.text = "일요일";
+                break;
+            case 0:
+                dateText.text = "월요일";
+                break;
+        }
+        Lock();
+
+        screenLocked.gameObject.SetActive(true);
+
+        fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
+        yield return new WaitForSeconds(.5f);
+        fadeImage.gameObject.SetActive(false);
     }
 }

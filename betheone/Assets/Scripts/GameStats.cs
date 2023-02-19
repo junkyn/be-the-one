@@ -5,6 +5,30 @@ using UnityEngine;
 
 public class GameStats : MonoBehaviour
 {
-    public static int Stage = 0;
-    public static int Date = 32;
+    private static GameStats instance = null;
+
+    private void Awake()
+    {
+        if (null == instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public static GameStats Instance
+    {
+        get
+        {
+            if (null == instance)
+                return null;
+            return instance;
+        }
+    }
+
+    public int Stage = 0;
 }
