@@ -32,4 +32,9 @@ public class StoryManager : MonoBehaviour
             }
         }
     }
+    public void OpenFirstJiHye()
+    {
+        monologueTrigger.TriggerMonologue("FirstDayJiHye");
+        GameStats.Stage = 2;
+    }
 }
