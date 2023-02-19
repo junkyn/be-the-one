@@ -5,21 +5,31 @@ using UnityEngine;
 
 public class StoryManager : MonoBehaviour
 {
-    public GameObject textObj;
+    public GameObject JiHyeMessage;
     // Start is called before the first frame update
-    void Start()
-    {
-        switch (GameStats.Stage)
-        {
-            case 1:
-                textObj.SetActive(true); break;
+    [SerializeField] MonologueTrigger monologueTrigger;
 
+    public void IDScreenEvent()
+    {
+        if (GameStats.Stage == 0)
+        {
+            monologueTrigger.TriggerMonologue("CheckName");
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    public void FirstDisableID()
     {
-        
+        StartCoroutine(FirstDayEvent());
+    }
+    IEnumerator FirstDayEvent()
+    {
+        if (GameStats.Stage == 0)
+        {
+            GameStats.Stage = 1;
+            yield return new WaitForSeconds(3f);
+            {
+                monologueTrigger.TriggerMonologue("GetMessage");
+                JiHyeMessage.SetActive(true);
+            }
+        }
     }
 }

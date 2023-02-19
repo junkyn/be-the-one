@@ -145,8 +145,8 @@ public class GameManager : MonoBehaviour
         screenLocked.DOPivotY(-.5f, 0);
         screenLocked.DOMove(screenPos, .5f);
         screenMain.gameObject.SetActive(true);
-
-        monologueTrigger.TriggerMonologue("Unlocked");
+        if(GameStats.Stage == 0)
+            monologueTrigger.TriggerMonologue("Unlocked");
 
         yield return appDelay;
         screenLocked.gameObject.SetActive(false);

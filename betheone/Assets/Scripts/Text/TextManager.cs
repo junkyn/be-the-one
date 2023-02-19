@@ -47,6 +47,12 @@ public class TextManager : MonoBehaviour
                     "우선 내가 누군지부터 알아볼까?"
                 };
                 break;
+            case 2:
+                str = new string[]
+                {
+                    "이해정?.. 이게 내 이름인건가?"
+                }
+                ; break;
         }
         index = 0;
         isTyping = false;
