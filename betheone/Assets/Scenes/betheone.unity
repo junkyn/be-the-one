@@ -15477,7 +15477,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1706276060}
         m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
-        m_MethodName: FirstDisableID
+        m_MethodName: FirstOpenID
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17924,6 +17924,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1177802019}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: AppShutdown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1706276060}
+        m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
+        m_MethodName: FirstOutID
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

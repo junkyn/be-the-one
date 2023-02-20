@@ -11,15 +11,18 @@ public class StoryManager : MonoBehaviour
 
     [SerializeField] GameObject JiHyeMessage;
 
-    public void FirstDisableID()
+    public void FirstOpenID()
     {
         if (GameStats.Instance.Stage.Equals(0))
         {
             monologueTrigger.TriggerMonologue("CheckName");
-            StartCoroutine(FirstDayEvent());
         }
     }
-
+    public void FirstOutID()
+    {
+        if(GameStats.Instance.Stage.Equals(0))
+          StartCoroutine(FirstDayEvent());
+    }
     IEnumerator FirstDayEvent()
     {
         yield return new WaitForSeconds(3f);
