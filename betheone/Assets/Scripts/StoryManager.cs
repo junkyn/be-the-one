@@ -40,4 +40,8 @@ public class StoryManager : MonoBehaviour
 
         GameStats.Instance.Stage = 2;
     }
+    public void Day2DeleteJiHye()
+    {
+        JiHyeMessage.SetActive(false);
+    }
 }

@@ -322,7 +322,7 @@ public class GameManager : MonoBehaviour
         chatCurrent = chat;
 
         for (int i = 0; i < chatContent.childCount; i++)
-            Destroy(chatContent.GetChild(0).gameObject);
+            Destroy(chatContent.GetChild(i).gameObject);
 
         chatName.text = "< " + chat.name;
         for (int i = 0; i < chat.sentences.Count; i++)
@@ -409,19 +409,25 @@ public class GameManager : MonoBehaviour
     public void Reply(TextMeshProUGUI text)
     {
         string reply = text.text;
-        if (reply.Equals("(답장하지 않는다.)"))
+        if (GameStats.Instance.Stage.Equals(2))
         {
-            chatCurrent.replyable = false;
-        }
-        else
-        {
-            chatCurrent.replyable = false;
-            chatCurrent.sentences.Add("-----------------------\n\n" + reply + "\n\n-----------------------");
-            StartCoroutine(MessageChatUpdate(chatCurrent));
+            if (reply.Equals("(답장하지 않는다.)"))
+            {
+                chatCurrent.replyable = false;
+                GameStats.Instance.Stage=3;
+            }
+            else
+            {
+                chatCurrent.replyable = false;
+                chatCurrent.sentences.Add("-----------------------\n\n" + reply + "\n\n-----------------------");
+                StartCoroutine(MessageChatUpdate(chatCurrent));
+                GameStats.Instance.Stage=4;
+            }
         }
 
+
         MessageChatReply();
-        if (GameStats.Instance.Stage.Equals(2))
+        if (GameStats.Instance.Stage.Equals(3)||GameStats.Instance.Stage.Equals(4))
             StartCoroutine(NextDay());
     }
 
@@ -501,5 +507,25 @@ public class GameManager : MonoBehaviour
         fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
         yield return new WaitForSeconds(.5f);
         fadeImage.gameObject.SetActive(false);
+        OpenDaySet();
+    }
+    
+    public void OpenDaySet()
+    {
+        switch (GameStats.Instance.Stage)
+        {
+            case 3:
+                monologueTrigger.TriggerMonologue("OpenDay2");
+                chatTrigger.Stage3JiHye();
+                break;
+            case 4:
+                monologueTrigger.TriggerMonologue("OpenDay2");
+                storyManager.Day2DeleteJiHye();
+                break;
+        }
+
+
+
+
     }
 }
