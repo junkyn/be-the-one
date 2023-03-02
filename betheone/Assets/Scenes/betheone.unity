@@ -4457,6 +4457,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &348805337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12531,6 +12543,7 @@ GameObject:
   - component: {fileID: 1115884377}
   - component: {fileID: 1115884379}
   - component: {fileID: 1115884378}
+  - component: {fileID: 1115884380}
   m_Layer: 5
   m_Name: MessageScreen
   m_TagString: Untagged
@@ -12598,6 +12611,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115884376}
   m_CullTransparentMesh: 1
+--- !u!114 &1115884380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115884376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3eaa3865dae9a41a0a6965ec641a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storyManager: {fileID: 1706276060}
 --- !u!1 &1116605681
 GameObject:
   m_ObjectHideFlags: 0
@@ -20689,6 +20715,9 @@ MonoBehaviour:
     - "\uB611\uAC19\uC740 \uCE68\uB300 \uC704 \uB611\uAC19\uC740 \uBC30\uACBD, \uB611\uAC19\uC740
       \uC2DC\uAC04.."
     - "\uB300\uCCB4 \uBB34\uC2A8\uC77C\uC774 \uC77C\uC5B4\uB098\uACE0 \uC788\uB294\uAC78\uAE4C?"
+  - stage: 2_Ans_CheckMe
+    sentences:
+    - "\uBA54\uC2DC\uC9C0\uAC00 \uC0AC\uB77C\uC84C\uC5B4...?"
 --- !u!224 &1862130584
 RectTransform:
   m_ObjectHideFlags: 0

@@ -44,4 +44,9 @@ public class StoryManager : MonoBehaviour
     {
         JiHyeMessage.SetActive(false);
     }
+    public void Stage4CheckMessage()
+    {
+        monologueTrigger.TriggerMonologue("2_Ans_CheckMe");
+        GameStats.Instance.Stage = 5;
+    }
 }
