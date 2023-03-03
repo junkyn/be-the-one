@@ -12,7 +12,8 @@ public class StoryManager : MonoBehaviour
     public Image MapImage;
     public Sprite hereMap;
     public Sprite hongdaeMap;
-    
+    public Image Internetimg;
+    public Sprite news1;
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
     [SerializeField] GameObject CrimePic;
@@ -74,7 +75,14 @@ public class StoryManager : MonoBehaviour
         dropdown.options.Add(HongDae);
         CrimePic.SetActive(true);
     }
-
+    public void Day3Update()
+    {
+        if (GameStats.Instance.Stage == 5)
+        {
+            Internetimg.sprite = news1;
+            JiHyeMessage.SetActive(false);
+        }
+    }
     public void MapChange(TMP_Dropdown option)
     {
         if (option.value.Equals(1))

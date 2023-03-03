@@ -531,6 +531,14 @@ public class GameManager : MonoBehaviour
                 storyManager.Day2DeleteJiHye();
                 storyManager.Day2Update();
                 break;
+            case 5:
+                monologueTrigger.TriggerMonologue("OpenDay3");
+                storyManager.Day3Update();
+                break;
+            case 6:
+                monologueTrigger.TriggerMonologue("OpenDay3_2");
+                storyManager.Day3Update();
+                break;
         }
     }
     public void CheckEnding()

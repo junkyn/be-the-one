@@ -33,6 +33,8 @@ public class GameStats : MonoBehaviour
     public bool Stage2CheckGallery = false;
     public bool Stage2CheckMessage = false;
     public bool Stage2CheckMap = false;
+    public bool Stage3CheckNews = false;
+    public bool Stage3CheckMessage = false;
     public bool CheckClear(int stage)
     {
         if(Stage == 3 || Stage == 4)
