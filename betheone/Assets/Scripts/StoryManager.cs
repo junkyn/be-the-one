@@ -9,11 +9,16 @@ public class StoryManager : MonoBehaviour
 {
     public int day = 1;
     public TMP_Dropdown dropdown;
+
+    [Header("Map")]
     public Image MapImage;
     public Sprite hereMap;
     public Sprite hongdaeMap;
+
+    [Header("Internet")]
     public Image Internetimg;
     public Sprite news1;
+    public Sprite ipconfig;
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
     [SerializeField] GameObject CrimePic;
@@ -81,6 +86,10 @@ public class StoryManager : MonoBehaviour
         {
             Internetimg.sprite = news1;
             JiHyeMessage.SetActive(false);
+        }
+        else if(GameStats.Instance.Stage == 6)
+        {
+            Internetimg.sprite = ipconfig;
         }
     }
     public void MapChange(TMP_Dropdown option)
