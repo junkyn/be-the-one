@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class StoryManager : MonoBehaviour
 {
     public int day = 1;
-
+    public TMP_Dropdown dropdown;
     [SerializeField] MonologueTrigger monologueTrigger;
-
     [SerializeField] GameObject JiHyeMessage;
-
+    [SerializeField] GameObject CrimePic;
     public void FirstOpenID()
     {
         if (GameStats.Instance.Stage.Equals(0))
@@ -40,13 +41,35 @@ public class StoryManager : MonoBehaviour
 
         GameStats.Instance.Stage = 2;
     }
+    public void Stage3OpenJiHye()
+    {
+        monologueTrigger.TriggerMonologue("2_XAns_CheckMe");
+        GameStats.Instance.Stage = 5;
+        GameStats.Instance.Stage2CheckMessage= true;
+    }
     public void Day2DeleteJiHye()
     {
         JiHyeMessage.SetActive(false);
     }
+
     public void Stage4CheckMessage()
     {
         monologueTrigger.TriggerMonologue("2_Ans_CheckMe");
-        GameStats.Instance.Stage = 5;
+        GameStats.Instance.Stage = 6;
+        GameStats.Instance.Stage2CheckMessage= true;
     }
+    public void Stage2CheckGallery()
+    {
+        monologueTrigger.TriggerMonologue("CheckCrimePi");
+        GameStats.Instance.Stage2CheckGallery= true;
+    }
+    public void Day2Update()
+    {
+        TMP_Dropdown.OptionData HongDae = new TMP_Dropdown.OptionData();
+        HongDae.text = "È«´ëÀÔ±¸¿ª";
+        HongDae.image = null;
+        dropdown.options.Add(HongDae);
+        CrimePic.SetActive(true);
+    }
+
 }

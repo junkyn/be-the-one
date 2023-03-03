@@ -6,7 +6,6 @@ using UnityEngine;
 public class GameStats : MonoBehaviour
 {
     private static GameStats instance = null;
-
     private void Awake()
     {
         if (null == instance)
@@ -31,4 +30,15 @@ public class GameStats : MonoBehaviour
     }
 
     public int Stage = 0;
+    public bool Stage2CheckGallery = false;
+    public bool Stage2CheckMessage = false;
+    public bool Stage2CheckMap = false;
+    public bool CheckClear(int stage)
+    {
+        if(Stage>=3 || Stage <= 6)
+        {
+            return (Stage2CheckGallery && Stage2CheckMessage && Stage2CheckMap);
+        }
+        return false;
+    }
 }

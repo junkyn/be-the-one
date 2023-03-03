@@ -3106,11 +3106,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: "\uC120\uD0DD\uD574\uC8FC\uC138\uC694"
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
+    - m_Text: "\uBAA9\uB85D"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3863,7 +3859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &318716685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9431,14 +9427,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 77f17ec152903064aaf465ca284ce6cc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13915,6 +13911,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stage: 0
+  Stage2CheckGallery: 0
+  Stage2CheckMessage: 0
+  Stage2CheckMap: 0
 --- !u!1 &1180276791
 GameObject:
   m_ObjectHideFlags: 0
@@ -18971,8 +18970,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   day: 1
+  dropdown: {fileID: 268013786}
   monologueTrigger: {fileID: 1862130583}
   JiHyeMessage: {fileID: 1018728596}
+  CrimePic: {fileID: 318716684}
 --- !u!4 &1706276061
 Transform:
   m_ObjectHideFlags: 0
@@ -20718,6 +20719,22 @@ MonoBehaviour:
   - stage: 2_Ans_CheckMe
     sentences:
     - "\uBA54\uC2DC\uC9C0\uAC00 \uC0AC\uB77C\uC84C\uC5B4...?"
+    - "\uB0AE\uC758 \uAE30\uC5B5\uC774 \uD558\uB098\uB3C4 \uB098\uC9C0 \uC54A\uB294\uAC78
+      \uBCF4"
+    - "\uAE30\uC5B5 \uC0C1\uC2E4\uC778\uAC74\uAC00?"
+  - stage: 2_XAns_CheckMe
+    sentences:
+    - "\uBB50\uC9C0?..."
+    - "\uB0AE\uC758 \uAE30\uC5B5\uC774 \uD558\uB098\uB3C4 \uB098\uC9C0 \uC54A\uB294\uB370"
+    - "\uAE30\uC5B5 \uC0C1\uC2E4\uC778\uAC74\uAC00?"
+  - stage: CheckCrimePi
+    sentences:
+    - "\uC5B4\uB450\uC6B4 \uACE8\uBAA9\uC758 \uC0AC\uC9C4\uC774\uB2E4."
+    - "\uBB58 \uC758\uBBF8\uD558\uB294 \uAC78\uAE4C?"
+  - stage: CheckMapDay2
+    sentences:
+    - "\uC5B4\uC81C\uB294 \uC5C6\uC5C8\uB358 \uAE30\uB85D\uAC19\uC740\uB370"
+    - "\uC5EC\uAE38 \uC65C \uAC14\uB358\uAC70\uC9C0?"
 --- !u!224 &1862130584
 RectTransform:
   m_ObjectHideFlags: 0

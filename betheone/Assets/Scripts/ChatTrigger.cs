@@ -19,6 +19,10 @@ public class ChatTrigger : MonoBehaviour
                 {
                     storyManager.OpenFirstJiHye();
                 }
+                if(name.Equals("¼ÕÁöÇý")&& GameStats.Instance.Stage.Equals(3))
+                {
+                    storyManager.Stage3OpenJiHye();
+                }
             }
     }
     public void Stage3JiHye()

@@ -229,6 +229,10 @@ public class GameManager : MonoBehaviour
         galleryZoomed.gameObject.SetActive(true);
 
         photoCurrent = image.gameObject;
+        if (image.name.Equals("crimeplace1") && !GameStats.Instance.Stage2CheckGallery)
+        {
+            storyManager.Stage2CheckGallery();
+        }
     }
 
     //갤러리에서 휴지통을 활성화합니다.
@@ -517,15 +521,25 @@ public class GameManager : MonoBehaviour
             case 3:
                 monologueTrigger.TriggerMonologue("OpenDay2");
                 chatTrigger.Stage3JiHye();
+                storyManager.Day2Update();
+       
                 break;
             case 4:
                 monologueTrigger.TriggerMonologue("OpenDay2");
                 storyManager.Day2DeleteJiHye();
+                storyManager.Day2Update();
                 break;
         }
-
-
-
-
+    }
+    public void CheckEnding()
+    {
+        if (GameStats.Instance.CheckClear(GameStats.Instance.Stage))
+        {
+            StartCoroutine(NextDay());
+        }
+    }
+    private void Update()
+    {
+        CheckEnding();
     }
 }
