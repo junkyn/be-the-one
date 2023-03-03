@@ -9,9 +9,14 @@ public class StoryManager : MonoBehaviour
 {
     public int day = 1;
     public TMP_Dropdown dropdown;
+    public Image MapImage;
+    public Sprite hereMap;
+    public Sprite hongdaeMap;
+    
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
     [SerializeField] GameObject CrimePic;
+    
     public void FirstOpenID()
     {
         if (GameStats.Instance.Stage.Equals(0))
@@ -44,7 +49,6 @@ public class StoryManager : MonoBehaviour
     public void Stage3OpenJiHye()
     {
         monologueTrigger.TriggerMonologue("2_XAns_CheckMe");
-        GameStats.Instance.Stage = 5;
         GameStats.Instance.Stage2CheckMessage= true;
     }
     public void Day2DeleteJiHye()
@@ -55,7 +59,6 @@ public class StoryManager : MonoBehaviour
     public void Stage4CheckMessage()
     {
         monologueTrigger.TriggerMonologue("2_Ans_CheckMe");
-        GameStats.Instance.Stage = 6;
         GameStats.Instance.Stage2CheckMessage= true;
     }
     public void Stage2CheckGallery()
@@ -72,4 +75,20 @@ public class StoryManager : MonoBehaviour
         CrimePic.SetActive(true);
     }
 
+    public void MapChange(TMP_Dropdown option)
+    {
+        if (option.value.Equals(1))
+        {
+            if (!GameStats.Instance.Stage2CheckMap)
+            {
+                monologueTrigger.TriggerMonologue("CheckMapDay2");
+                GameStats.Instance.Stage2CheckMap = true;
+            }
+            MapImage.sprite = hongdaeMap;
+        }
+        else if(option.value.Equals(0))
+        {
+            MapImage.sprite = hereMap;
+        }
+    }
 }

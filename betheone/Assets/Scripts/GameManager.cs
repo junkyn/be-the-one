@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEditor.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
     [Header("Monologue")]
     [SerializeField] MonologueManager monologueManager;
     [SerializeField] MonologueTrigger monologueTrigger;
+    public GameObject Monologue;
 
     [Header("Gallery")]
     [SerializeField] Image galleryZoomed;
@@ -229,7 +231,7 @@ public class GameManager : MonoBehaviour
         galleryZoomed.gameObject.SetActive(true);
 
         photoCurrent = image.gameObject;
-        if (image.name.Equals("crimeplace1") && !GameStats.Instance.Stage2CheckGallery)
+        if (image.sprite.name.Equals("crimeplace1") && !GameStats.Instance.Stage2CheckGallery)
         {
             storyManager.Stage2CheckGallery();
         }
@@ -535,11 +537,17 @@ public class GameManager : MonoBehaviour
     {
         if (GameStats.Instance.CheckClear(GameStats.Instance.Stage))
         {
+            if (GameStats.Instance.Stage == 3)
+                GameStats.Instance.Stage = 5;
+            if (GameStats.Instance.Stage == 4)
+                GameStats.Instance.Stage = 6;
+
             StartCoroutine(NextDay());
         }
     }
     private void Update()
     {
-        CheckEnding();
+        if(!Monologue.activeSelf)
+             CheckEnding();
     }
 }

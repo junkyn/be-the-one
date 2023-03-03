@@ -35,7 +35,7 @@ public class GameStats : MonoBehaviour
     public bool Stage2CheckMap = false;
     public bool CheckClear(int stage)
     {
-        if(Stage>=3 || Stage <= 6)
+        if(Stage == 3 || Stage == 4)
         {
             return (Stage2CheckGallery && Stage2CheckMessage && Stage2CheckMap);
         }
