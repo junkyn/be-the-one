@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class StoryManager : MonoBehaviour
 {
-    public int day = 1;
+    public int day = 0;
     public TMP_Dropdown dropdown;
 
     [Header("Map")]

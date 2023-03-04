@@ -4,16 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using UnityEditor.SceneManagement;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
     Color transparent = new Color(1, 1, 1, 0);
 
+    [SerializeField] GameObject screenContinue, screenWarning;
+
     [SerializeField] RectTransform screenCurrent;
     Vector3 screenPos;
     WaitForSeconds appDelay;
     [SerializeField] Image fadeImage;
+
+
+    [System.Serializable]
+    public class SaveData
+    {
+        public int stage;
+        public int day;
+    }
+    string path;
+    public int stageSaved;
+    public int daySaved;
 
     [Header("Story")]
     [SerializeField] StoryManager storyManager;
@@ -34,14 +47,6 @@ public class GameManager : MonoBehaviour
     int currentMinute = 0, currentHour = 2;
     new WaitForSeconds timer;
 
-    /*
-    [Header("Game Stats")]
-    int _date;
-    int month = 7;
-    string[] daylist = { "월", "화", "수", "목", "금", "토", "일" };
-    string day;
-    */
-
     [Header("Monologue")]
     [SerializeField] MonologueManager monologueManager;
     [SerializeField] MonologueTrigger monologueTrigger;
@@ -61,6 +66,15 @@ public class GameManager : MonoBehaviour
 
     [Header("Call")]
     [SerializeField] TextMeshProUGUI callDialText;
+    [SerializeField] TextMeshProUGUI callIncoming, calling;
+
+    public List<string> numbersEnable;
+    [SerializeField] GameObject callScreen;
+    [SerializeField] GameObject callPrefab;
+    [SerializeField] Transform callContent;
+    [SerializeField] ScrollRect callScrollRect;
+    [SerializeField] TextMeshProUGUI callReply1, callReply2, callReply3;
+    [SerializeField] GameObject callEnd;
 
     [Header("Message")]
     [SerializeField] ChatTrigger chatTrigger;
@@ -75,21 +89,41 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button replyButton;
     [SerializeField] TextMeshProUGUI reply1, reply2, reply3;
 
+    [Header("Note")]
+    [SerializeField] TextMeshProUGUI noteText;
+    [SerializeField] Transform noteButtons;
+    [SerializeField] TextMeshProUGUI note1, note2, note3;
+
     [Header("Setting")]
     [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource fx;
     [SerializeField] Slider bgmSlider, fxSlider;
     [SerializeField] Toggle slowToggle, fastToggle;
 
-    void Start()
+    private void Start()
     {
+        path = Path.Combine(Application.dataPath, "database.json");
+        SaveData saveData = new SaveData();
+
+        if (!File.Exists(path))
+        {
+            stageSaved = 0;
+            daySaved = 0;
+            SaveGame();
+        }
+        else
+        {
+            string loadJson = File.ReadAllText(path);
+            saveData = JsonUtility.FromJson<SaveData>(loadJson);
+
+            if (saveData != null)
+            {
+                stageSaved = saveData.stage;
+                daySaved = saveData.day;
+            }
+        }
+
         touchToUnlock.DOColor(transparent, 1).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
-
-        //DateSet();
-
-        timer = new WaitForSeconds(1);
-
-        monologueTrigger.TriggerMonologue("Intro");
 
         screenPos = screenMain.position;
         appDelay = new WaitForSeconds(.55f);
@@ -97,20 +131,57 @@ public class GameManager : MonoBehaviour
         galleryZoomedPos = galleryZoomed.transform.position;
     }
 
-    /*날짜를 업데이트합니다.
-    void DateSet()
+    public void SaveGame()
     {
-        _date = GameStats.Date;
-        day = daylist[_date % 7];
-        if (_date > 31)
-        {
-            month++;
-            _date -= 31;
-        }
-        dateText.text = month + "월 " + _date + "일";
-        dayText.text = day + "요일";
+        SaveData saveData = new SaveData();
+
+        saveData.stage = GameStats.Instance.Stage;
+        saveData.day = storyManager.day;
+
+        string json = JsonUtility.ToJson(saveData, true);
+
+        File.WriteAllText(path, json);
     }
-    */
+
+    public void LoadGame(bool load)
+    {
+        if (load)
+        {
+            GameStats.Instance.Stage = stageSaved;
+            storyManager.day = daySaved - 1;
+
+            StartCoroutine(GameStartCoroutine());
+        }
+        else
+        {
+            if (stageSaved != 0 || daySaved != 0)
+                screenWarning.SetActive(true);
+            else
+                NewGame();
+        }
+    }
+
+    public void NewGame()
+    {
+        StartCoroutine(GameStartCoroutine());
+    }
+
+    IEnumerator GameStartCoroutine()
+    {
+        StartCoroutine(NextDay());
+        yield return new WaitForSeconds(3.5f);
+
+        screenContinue.SetActive(false);
+        GameStart();
+    }
+
+    void GameStart()
+    {
+        timer = new WaitForSeconds(1);
+
+        if (GameStats.Instance.Stage.Equals(0))
+            monologueTrigger.TriggerMonologue("Intro");
+    }
 
     //잠금이 해제된 시점부터 시간을 업데이트합니다.
     IEnumerator TimeCheck()
@@ -315,6 +386,114 @@ public class GameManager : MonoBehaviour
             callDialText.text = callDialText.text.Remove(callDialText.text.Length - 1);
     }
 
+    public void CallIncome(string number)
+    {
+        callScreen.SetActive(true);
+        callIncoming.transform.parent.gameObject.SetActive(true);
+        callIncoming.text = number;
+    }
+
+    public void CallTake(TextMeshProUGUI number)
+    {
+        calling.text = number.text;
+        CallStart(number.text);
+    }
+
+    public void Call(TextMeshProUGUI number)
+    {
+        if (numbersEnable.Contains(number.text))
+        {
+            calling.text = number.text;
+            CallStart(number.text);
+        }
+    }
+
+    public void CallStart(string number)
+    {
+        switch (number)
+        {
+            case "01012345678":
+                if (GameStats.Instance.Stage.Equals(0))
+                    StartCoroutine(CallCoroutine("전화 예시입니다.", "답장1", "답장2", "답장3"));
+                if (GameStats.Instance.Stage.Equals(1))
+                    StartCoroutine(CallCoroutine("전화 예시2입니다.", "답장2-1", "답장2-2", "답장2-3"));
+                if (GameStats.Instance.Stage.Equals(2))
+                    StartCoroutine(CallCoroutine("전화를 끊습니다.", "답장1", "답장2", "전화를 끊는다."));
+                if (GameStats.Instance.Stage.Equals(3))
+                    StartCoroutine(CallCoroutine("전화가 끊깁니다.", "답장1", "답장2", "답장3", true));
+                break;
+        }
+    }
+
+    public IEnumerator CallCoroutine(string sentence, string reply1, string reply2, string reply3, bool hangUp = false)
+    {
+        yield return appDelay;
+
+        GameObject call = Instantiate(callPrefab, callContent);
+        call.GetComponent<TextMeshProUGUI>().text = sentence;
+
+        if (!hangUp)
+            CallReplyUpdate(reply1, reply2, reply3);
+        else
+            CallHangUp();
+    }
+
+    void CallReplyUpdate(string reply1, string reply2, string reply3)
+    {
+        callReply1.transform.parent.GetComponent<Button>().interactable = true;
+        callReply2.transform.parent.GetComponent<Button>().interactable = true;
+        callReply3.transform.parent.GetComponent<Button>().interactable = true;
+
+        callReply1.text = reply1;
+        callReply2.text = reply2;
+        callReply3.text = reply3;
+    }
+
+    public void CallReply(TextMeshProUGUI reply)
+    {
+        if (reply.text != "전화를 끊는다.")
+        {
+            callReply1.transform.parent.GetComponent<Button>().interactable = false;
+            callReply2.transform.parent.GetComponent<Button>().interactable = false;
+            callReply3.transform.parent.GetComponent<Button>().interactable = false;
+
+            GameObject callReply = Instantiate(callPrefab, callContent);
+            callReply.GetComponent<TextMeshProUGUI>().text = reply.text;
+            callReply.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
+
+            Canvas.ForceUpdateCanvases();
+            callScrollRect.verticalNormalizedPosition = 0;
+
+            GameStats.Instance.Stage++;
+            CallStart(calling.text);
+        }
+        else
+        {
+            CallHangUp();
+
+            GameStats.Instance.Stage++;
+        }
+    }
+
+    public void CallHangUp()
+    {
+        callReply1.transform.parent.GetComponent<Button>().interactable = false;
+        callReply2.transform.parent.GetComponent<Button>().interactable = false;
+        callReply3.transform.parent.GetComponent<Button>().interactable = false;
+
+        monologueTrigger.TriggerMonologue("HangUp");
+        callEnd.SetActive(true);
+    }
+
+    public void CallReset()
+    {
+        foreach (Transform chats in callContent)
+            Destroy(chats.gameObject);
+
+        callScreen.SetActive(false);
+        calling.transform.parent.gameObject.SetActive(false);
+    }
+
     //메시지 앱에서 채팅창으로 이동합니다.
     public void MessageChatActivate(string name)
     {
@@ -431,7 +610,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-
         MessageChatReply();
         if (GameStats.Instance.Stage.Equals(3)||GameStats.Instance.Stage.Equals(4))
             StartCoroutine(NextDay());
@@ -456,6 +634,14 @@ public class GameManager : MonoBehaviour
         clickBlock.SetActive(false);
     }
 
+    //메모를 입력합니다.
+    public void NoteWrite(TextMeshProUGUI note)
+    {
+        string noteToWrite = note.text;
+        noteText.text = noteToWrite;
+        noteButtons.DOMoveY(-340, .5f).SetRelative();
+    }
+
     //설정을 변경합니다.
     public void Settings()
     {
@@ -477,8 +663,10 @@ public class GameManager : MonoBehaviour
     IEnumerator NextDay()
     {
         fadeImage.gameObject.SetActive(true);
-        fadeImage.DOColor(new Color(0, 0, 0, 1), 4f);
-        yield return new WaitForSeconds(4.5f);
+        fadeImage.DOColor(new Color(0, 0, 0, 1), 3f);
+        yield return new WaitForSeconds(3.5f);
+
+        SaveGame();
 
         storyManager.day++;
         dayText.text = "8월 " + storyManager.day.ToString() + "일";
@@ -510,6 +698,17 @@ public class GameManager : MonoBehaviour
 
         screenLocked.gameObject.SetActive(true);
 
+        noteButtons.DOMoveY(340, .5f).SetRelative();
+        //노트 내용을 설정합니다.
+        switch(storyManager.day)
+        {
+            case 1:
+                note1.text = "";
+                note2.text = "";
+                note3.text = "";
+                break;
+        }
+
         fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
         yield return new WaitForSeconds(.5f);
         fadeImage.gameObject.SetActive(false);
@@ -524,7 +723,6 @@ public class GameManager : MonoBehaviour
                 monologueTrigger.TriggerMonologue("OpenDay2");
                 chatTrigger.Stage3JiHye();
                 storyManager.Day2Update();
-       
                 break;
             case 4:
                 monologueTrigger.TriggerMonologue("OpenDay2");
@@ -557,5 +755,8 @@ public class GameManager : MonoBehaviour
     {
         if(!Monologue.activeSelf)
              CheckEnding();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            CallIncome("01012345678");
     }
 }
