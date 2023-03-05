@@ -16219,9 +16219,9 @@ MonoBehaviour:
   reply3: {fileID: 1132292886}
   noteText: {fileID: 181685650}
   noteButtons: {fileID: 1709233721}
-  note1: {fileID: 0}
-  note2: {fileID: 0}
-  note3: {fileID: 0}
+  note1: {fileID: 50535233}
+  note2: {fileID: 455149347}
+  note3: {fileID: 146212544}
   bgm: {fileID: 36939317}
   fx: {fileID: 1862130587}
   bgmSlider: {fileID: 1491795730}
@@ -27144,7 +27144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2071157582
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28160,7 +28160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2132890635
 RectTransform:
   m_ObjectHideFlags: 0
