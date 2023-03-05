@@ -155,7 +155,7 @@ public class StoryManager : MonoBehaviour
         {
             NoteText.text = "앞으로 어떤 일이 있더라도 휴대폰은 건들지마.";
             NoteBut1.text = "알았어";
-            NoteBut2.text = "내가 너고 너도 나야. 왜 건들지 말라는거지?";
+            NoteBut2.text = "대체 왜? 내 맘인데..";
         }
     }
     public void Day4CheckMessage()

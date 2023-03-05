@@ -16321,6 +16321,7 @@ MonoBehaviour:
   galleryBinButton: {fileID: 355168342}
   galleryBinButtonText: {fileID: 79336112}
   galleryDeleteButton: {fileID: 1102572416}
+  GalleryScreen: {fileID: 1961707196}
   photoPrefab: {fileID: 3697328045597239610, guid: 82e7ef10191da8043a572e26895c801c, type: 3}
   galleryContent: {fileID: 141771793}
   binContent: {fileID: 256918399}
@@ -16346,6 +16347,7 @@ MonoBehaviour:
   chatName: {fileID: 1983782813}
   chatContent: {fileID: 364390668}
   chatScrollRect: {fileID: 1376457418}
+  MessageScreen: {fileID: 1115884376}
   chatRectTransform: {fileID: 1376457417}
   replyButton: {fileID: 1030822607}
   reply1: {fileID: 1720630858}
@@ -16356,12 +16358,18 @@ MonoBehaviour:
   note1: {fileID: 50535233}
   note2: {fileID: 455149347}
   note3: {fileID: 146212544}
+  noteButton1: {fileID: 1995165643}
+  noteButton2: {fileID: 858880273}
+  noteButton3: {fileID: 1754505693}
+  NoteScreen: {fileID: 705013562}
   bgm: {fileID: 36939317}
   fx: {fileID: 1862130587}
   bgmSlider: {fileID: 1491795730}
   fxSlider: {fileID: 1567473159}
   slowToggle: {fileID: 309720339}
   fastToggle: {fileID: 781602495}
+  MapScreen: {fileID: 2070150798}
+  InternetScreen: {fileID: 1248523717}
 --- !u!4 &1177802020
 Transform:
   m_ObjectHideFlags: 0
@@ -16407,6 +16415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stage: 0
+  Route: 0
   Stage2CheckGallery: 0
   Stage2CheckMessage: 0
   Stage2CheckMap: 0
@@ -22161,6 +22170,10 @@ MonoBehaviour:
   JiHyeMessage: {fileID: 1018728596}
   CrimePic: {fileID: 318716684}
   VictimPic: {fileID: 650980316}
+  NoteText: {fileID: 181685650}
+  NoteBut1: {fileID: 50535233}
+  NoteBut2: {fileID: 455149347}
+  NoteBut3: {fileID: 146212544}
 --- !u!4 &1706276061
 Transform:
   m_ObjectHideFlags: 0

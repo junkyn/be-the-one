@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject noteButton1;
     [SerializeField] GameObject noteButton2;
     [SerializeField] GameObject noteButton3;
-
+    [SerializeField] GameObject NoteScreen;
 
     [Header("Setting")]
     [SerializeField] AudioSource bgm;
@@ -659,6 +659,31 @@ public class GameManager : MonoBehaviour
         {
             noteText.text = noteToWrite;
         }
+        if(note.text.Equals("어제 너가 죽인거야?"))
+        {
+            GameStats.Instance.Route = 1;
+            GameStats.Instance.Stage4CheckMemo = true;
+        }
+        else if(note.text.Equals("(남기지 않음)"))
+        {
+            GameStats.Instance.Route = 2;
+            GameStats.Instance.Stage4CheckMemo = true;
+        }
+        else if (note.text.Equals("뭘 도와주면 될까?"))
+        {
+            GameStats.Instance.Route = 3;
+            GameStats.Instance.Stage4CheckMemo = true;
+        }
+        else if (note.text.Equals("알았어"))
+        {
+            GameStats.Instance.Route = 4;
+            GameStats.Instance.Stage4CheckMemo = true;
+        }
+        else if (note.text.Equals("대체 왜? 내 맘인데.."))
+        {
+            GameStats.Instance.Route = 5;
+            GameStats.Instance.Stage4CheckMemo = true;
+        }
         noteButtons.DOMoveY(-340, .5f).SetRelative();
 
 
@@ -790,6 +815,28 @@ public class GameManager : MonoBehaviour
                 GameStats.Instance.Stage = 6;
             else if (GameStats.Instance.Stage == 3)
                 GameStats.Instance.Stage = 5;
+            else if(GameStats.Instance.Stage == 8 || GameStats.Instance.Stage == 7)
+            {
+                switch(GameStats.Instance.Route)
+                {
+                    case 1:
+                        GameStats.Instance.Stage = 9;
+                        break;
+                    case 2:
+                        GameStats.Instance.Stage = 10;
+                        break;
+                    case 3:
+                        GameStats.Instance.Stage = 11;
+                        break;
+                    case 4:
+                        GameStats.Instance.Stage = 12;
+                        break;
+                    case 5:
+                        GameStats.Instance.Stage = 13;
+                        break;
+                }
+                GameStats.Instance.Route = 0;
+            }
 
 
 
@@ -799,7 +846,7 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!Monologue.activeSelf && !GalleryScreen.activeSelf && !MapScreen.activeSelf && !MessageScreen.activeSelf && !InternetScreen.activeSelf)
+        if(!Monologue.activeSelf && !GalleryScreen.activeSelf && !MapScreen.activeSelf && !MessageScreen.activeSelf && !InternetScreen.activeSelf && !NoteScreen.activeSelf)
              CheckEnding();
 
         if (Input.GetKeyDown(KeyCode.Space))

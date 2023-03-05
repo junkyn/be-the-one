@@ -30,6 +30,7 @@ public class GameStats : MonoBehaviour
     }
 
     public int Stage = 0;
+    public int Route = 0;
     public bool Stage2CheckGallery = false;
     public bool Stage2CheckMessage = false;
     public bool Stage2CheckMap = false;
@@ -50,6 +51,10 @@ public class GameStats : MonoBehaviour
         else if (Stage == 6)
         {
             return (Stage3CheckInternet);
+        }
+        else if(Stage == 7 || Stage == 8)
+        {
+            return(Stage4CheckMemo&& Stage4CheckMessage);
         }
         return false;
     }
