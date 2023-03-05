@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] RectTransform galleryBinButton;
     [SerializeField] TextMeshProUGUI galleryBinButtonText;
     [SerializeField] GameObject galleryDeleteButton;
-
+    [SerializeField] GameObject GalleryScreen;
     GameObject photoCurrent;
     [SerializeField] GameObject photoPrefab;
     [SerializeField] Transform galleryContent, binContent;
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI chatName;
     [SerializeField] Transform chatContent;
     [SerializeField] ScrollRect chatScrollRect;
-
+    [SerializeField] GameObject MessageScreen;
     [SerializeField] RectTransform chatRectTransform;
     bool replying = false;
     [SerializeField] Button replyButton;
@@ -93,6 +93,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI noteText;
     [SerializeField] Transform noteButtons;
     [SerializeField] TextMeshProUGUI note1, note2, note3;
+    [SerializeField] GameObject noteButton1;
+    [SerializeField] GameObject noteButton2;
+    [SerializeField] GameObject noteButton3;
+
 
     [Header("Setting")]
     [SerializeField] AudioSource bgm;
@@ -100,6 +104,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Slider bgmSlider, fxSlider;
     [SerializeField] Toggle slowToggle, fastToggle;
 
+    public GameObject MapScreen;
+    public GameObject InternetScreen;
     private void Start()
     {
         path = Path.Combine(Application.dataPath, "database.json");
@@ -305,6 +311,10 @@ public class GameManager : MonoBehaviour
         if (image.sprite.name.Equals("crimeplace1") && !GameStats.Instance.Stage2CheckGallery)
         {
             storyManager.Stage2CheckGallery();
+        }
+        else if(image.sprite.name.Equals("victim")&& !GameStats.Instance.Stage3CheckGallery)
+        {
+            storyManager.Stage3CheckGallery();
         }
     }
 
@@ -515,11 +525,18 @@ public class GameManager : MonoBehaviour
             GameObject newChat = Instantiate(chatPrefab, chatContent);
             newChat.GetComponent<TextMeshProUGUI>().text= chat.sentences[i];
             newChat.transform.DOScale(Vector3.one, 0);
-
-            if ((i % 2).Equals(0))
-                newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Left;
+            if (chat.name.Equals("손지혜"))
+            {
+                if ((i % 2).Equals(0))
+                    newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Left;
+                else
+                    newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
+            }
             else
-                newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Right;
+            {
+                newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Left;
+            }
+
         }
 
         if (!chat.replyable)
@@ -638,8 +655,13 @@ public class GameManager : MonoBehaviour
     public void NoteWrite(TextMeshProUGUI note)
     {
         string noteToWrite = note.text;
-        noteText.text = noteToWrite;
+        if(!note.text.Equals("(남기지 않음)"))
+        {
+            noteText.text = noteToWrite;
+        }
         noteButtons.DOMoveY(-340, .5f).SetRelative();
+
+
     }
 
     //설정을 변경합니다.
@@ -698,23 +720,30 @@ public class GameManager : MonoBehaviour
 
         screenLocked.gameObject.SetActive(true);
 
-        noteButtons.DOMoveY(340, .5f).SetRelative();
+
         //노트 내용을 설정합니다.
-        switch(storyManager.day)
-        {
-            case 1:
-                note1.text = "";
-                note2.text = "";
-                note3.text = "";
-                break;
-        }
+        noteButton1.SetActive(true);
+        noteButton2.SetActive(true);
+        noteButton3.SetActive(true);
+        //noteButtons.DOMoveY(340, .5f).SetRelative();
+        note1.text = "";
+        note2.text = "";
+        note3.text = "";
+
 
         fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
         yield return new WaitForSeconds(.5f);
         fadeImage.gameObject.SetActive(false);
         OpenDaySet();
+        if (note1.text.Equals(""))
+            noteButton1.SetActive(false);
+        if (note2.text.Equals(""))
+            noteButton2.SetActive(false);
+        if (note3.text.Equals(""))
+            noteButton3.SetActive(false);
+
     }
-    
+
     public void OpenDaySet()
     {
         switch (GameStats.Instance.Stage)
@@ -737,23 +766,40 @@ public class GameManager : MonoBehaviour
                 monologueTrigger.TriggerMonologue("OpenDay3_2");
                 storyManager.Day3Update();
                 break;
+            case 7:
+                monologueTrigger.TriggerMonologue("OpenDay4");
+                chatTrigger.Stage4Ashylum();
+                storyManager.Day4Update();
+                break;
+            case 8:
+                monologueTrigger.TriggerMonologue("OpenDay4");
+                chatTrigger.Stage4Ashylum();
+                storyManager.Day4Update();
+                break;
         }
     }
     public void CheckEnding()
     {
         if (GameStats.Instance.CheckClear(GameStats.Instance.Stage))
         {
-            if (GameStats.Instance.Stage == 3)
-                GameStats.Instance.Stage = 5;
-            if (GameStats.Instance.Stage == 4)
+            if (GameStats.Instance.Stage == 5)
+                GameStats.Instance.Stage = 7;
+            else if (GameStats.Instance.Stage == 6)
+                GameStats.Instance.Stage = 8;
+            else if (GameStats.Instance.Stage == 4)
                 GameStats.Instance.Stage = 6;
+            else if (GameStats.Instance.Stage == 3)
+                GameStats.Instance.Stage = 5;
+
+
+
 
             StartCoroutine(NextDay());
         }
     }
     private void Update()
     {
-        if(!Monologue.activeSelf)
+        if(!Monologue.activeSelf && !GalleryScreen.activeSelf && !MapScreen.activeSelf && !MessageScreen.activeSelf && !InternetScreen.activeSelf)
              CheckEnding();
 
         if (Input.GetKeyDown(KeyCode.Space))

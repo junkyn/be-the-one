@@ -1835,6 +1835,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 318716685}
+  - {fileID: 650980317}
   m_Father: {fileID: 412786891}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9280,6 +9281,139 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643206785}
   m_CullTransparentMesh: 1
+--- !u!1 &650980316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650980317}
+  - component: {fileID: 650980320}
+  - component: {fileID: 650980319}
+  - component: {fileID: 650980318}
+  m_Layer: 5
+  m_Name: victim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &650980317
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650980316}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 141771793}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &650980318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650980316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 650980319}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1177802019}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GalleryZoomIn
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 650980319}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &650980319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650980316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 74d8951249b977e439e6984ca50437e9, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &650980320
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650980316}
+  m_CullTransparentMesh: 1
 --- !u!1 &655365970
 GameObject:
   m_ObjectHideFlags: 0
@@ -16276,8 +16410,10 @@ MonoBehaviour:
   Stage2CheckGallery: 0
   Stage2CheckMessage: 0
   Stage2CheckMap: 0
-  Stage3CheckNews: 0
-  Stage3CheckMessage: 0
+  Stage3CheckInternet: 0
+  Stage3CheckGallery: 0
+  Stage4CheckMessage: 0
+  Stage4CheckMemo: 0
 --- !u!1 &1178047501
 GameObject:
   m_ObjectHideFlags: 0
@@ -17226,6 +17362,7 @@ GameObject:
   - component: {fileID: 1248523718}
   - component: {fileID: 1248523720}
   - component: {fileID: 1248523719}
+  - component: {fileID: 1248523721}
   m_Layer: 5
   m_Name: InternetScreen
   m_TagString: Untagged
@@ -17293,6 +17430,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248523717}
   m_CullTransparentMesh: 1
+--- !u!114 &1248523721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248523717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cbe3e1d63b24f64f826fd2ececfc04a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storyManager: {fileID: 1706276060}
 --- !u!1 &1263429555
 GameObject:
   m_ObjectHideFlags: 0
@@ -22010,6 +22160,7 @@ MonoBehaviour:
   monologueTrigger: {fileID: 1862130583}
   JiHyeMessage: {fileID: 1018728596}
   CrimePic: {fileID: 318716684}
+  VictimPic: {fileID: 650980316}
 --- !u!4 &1706276061
 Transform:
   m_ObjectHideFlags: 0
@@ -24095,6 +24246,36 @@ MonoBehaviour:
       \uBD88\uCF8C\uD558\uB124..."
     - "\uB2F9\uC5F0\uD558\uACA0\uC9C0 \uC774\uC820 \uBB50\uAC00 \uBB54\uC9C0\uB3C4
       \uBAA8\uB974\uACA0\uC5B4."
+  - stage: CheckNews
+    sentences:
+    - "\uC5B4?... \uBB50\uC57C \uC774\uAC70?..."
+    - "\uD64D\uB300\uC785\uAD6C\uBA74 \uB0B4\uAC00 \uC5B4\uC81C \uAC14\uB2E4\uB294
+      \uACF3\uC774\uACE0.."
+    - "\uC190 \uBAA8 \uC591\uC774\uBA74 \uC124\uB9C8 \uB098\uB791 \uBB38\uC790\uD558\uB358
+      \uC0AC\uB78C?..."
+    - "\uC544\uB2C8\uACA0\uC9C0?..."
+  - stage: CheckIP
+    sentences:
+    - "\uC5B4?... \uBB50\uC57C \uC774\uAC70?..."
+    - "IP\uAE30\uB85D\uC740 \uC65C \uD655\uC778\uD558\uACE0 \uC788\uB358\uAC70\uC9C0?"
+    - "\uC124\uB9C8 \uD574\uD0B9\uC744 \uC758\uC2EC\uD55C\uAC74\uAC00?"
+    - "\uB0AE\uC5D0\uB3C4 \uBC24\uC5D0 \uC77C\uC744 \uAE30\uC5B5 \uBABB\uD558\uB294
+      \uAC83 \uAC19\uB2E4."
+  - stage: CheckVictim
+    sentences:
+    - ????
+    - "\uBB50\uC57C \uC774\uAC70???"
+    - "\uB054\uCC0D\uD558\uAC8C \uC0B4\uD574\uB41C \uC5EC\uC790 \uC0AC\uC9C4\uC774\uB2E4."
+    - "\uB300\uCCB4 \uC65C \uC774\uB7F0 \uC0AC\uC9C4\uC774 \uB0B4 \uD734\uB300\uD3F0\uC5D0..."
+  - stage: OpenDay4
+    sentences:
+    - ...
+    - "\uC774\uC820 \uB180\uB78D\uC9C0\uB3C4 \uC54A\uC544."
+  - stage: Day4CheckMes
+    sentences:
+    - "\uC544 \uC774\uB7F0\uAC70\uC600\uAD6C\uB098.."
+    - "\uB300\uCCB4 \uB0AE\uC758 \uB098\uB294 \uBB58 \uD558\uACE0 \uB2E4\uB2C8\uB294
+      \uAC70\uC9C0?"
 --- !u!224 &1862130584
 RectTransform:
   m_ObjectHideFlags: 0

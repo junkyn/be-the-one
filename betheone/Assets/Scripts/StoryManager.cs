@@ -22,6 +22,13 @@ public class StoryManager : MonoBehaviour
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
     [SerializeField] GameObject CrimePic;
+    [SerializeField] GameObject VictimPic;
+    [Header("Note")]
+    [SerializeField] TextMeshProUGUI NoteText;
+    [SerializeField] TextMeshProUGUI NoteBut1;
+    [SerializeField] TextMeshProUGUI NoteBut2;
+    [SerializeField] TextMeshProUGUI NoteBut3;
+
     
     public void FirstOpenID()
     {
@@ -86,6 +93,7 @@ public class StoryManager : MonoBehaviour
         {
             Internetimg.sprite = news1;
             JiHyeMessage.SetActive(false);
+            VictimPic.SetActive(true);
         }
         else if(GameStats.Instance.Stage == 6)
         {
@@ -107,5 +115,52 @@ public class StoryManager : MonoBehaviour
         {
             MapImage.sprite = hereMap;
         }
+    }
+    public void Stage3CheckInternet()
+    {
+        if(!GameStats.Instance.Stage3CheckInternet)
+        {
+            if(GameStats.Instance.Stage == 5)
+            {
+                monologueTrigger.TriggerMonologue("CheckNews");
+                GameStats.Instance.Stage3CheckInternet = true;
+            }
+            else if(GameStats.Instance.Stage == 6)
+            {
+                monologueTrigger.TriggerMonologue("CheckIP");
+                GameStats.Instance.Stage3CheckInternet = true;
+            }
+
+        }
+    }
+    public void Stage3CheckGallery()
+    {
+        monologueTrigger.TriggerMonologue("CheckVictim");
+        GameStats.Instance.Stage3CheckGallery = true;
+    }
+    
+    public void Day4Update()
+    {
+        CrimePic.SetActive(false);
+        if(VictimPic.activeSelf)
+            VictimPic.SetActive(false);
+        if (GameStats.Instance.Stage.Equals(7))
+        {
+            NoteText.text = "안녕?";
+            NoteBut1.text = "어제 너가 죽인거야?";
+            NoteBut2.text = "뭘 도와주면 될까?";
+            NoteBut3.text = "(남기지 않음)";
+        }
+        else if (GameStats.Instance.Stage.Equals(8))
+        {
+            NoteText.text = "앞으로 어떤 일이 있더라도 휴대폰은 건들지마.";
+            NoteBut1.text = "알았어";
+            NoteBut2.text = "내가 너고 너도 나야. 왜 건들지 말라는거지?";
+        }
+    }
+    public void Day4CheckMessage()
+    {
+        monologueTrigger.TriggerMonologue("Day4CheckMes");
+        GameStats.Instance.Stage4CheckMessage = true;
     }
 }
