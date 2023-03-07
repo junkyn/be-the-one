@@ -29,7 +29,7 @@ public class GameStats : MonoBehaviour
         }
     }
 
-    public int Stage = 0;
+    public int Stage = 11;
     public int Route = 0;
     public bool Stage2CheckGallery = false;
     public bool Stage2CheckMessage = false;
@@ -39,9 +39,12 @@ public class GameStats : MonoBehaviour
     public bool Stage4CheckMessage = false;
     public bool Stage4CheckMemo = false;
     public bool Stage5CheckMemo = false;
+    public bool Stage5CheckMessage = false;
+    public bool Stage5CheckCall = false;
+    public bool Stage5DeletePhoto = false;
     public bool CheckClear(int stage)
     {
-        if(Stage == 3 || Stage == 4)
+        if (Stage == 3 || Stage == 4)
         {
             return (Stage2CheckGallery && Stage2CheckMessage && Stage2CheckMap);
         }
@@ -53,14 +56,25 @@ public class GameStats : MonoBehaviour
         {
             return (Stage3CheckInternet);
         }
-        else if(Stage == 7 || Stage == 8)
+        else if (Stage == 7 || Stage == 8)
         {
-            return(Stage4CheckMemo&& Stage4CheckMessage);
+            return (Stage4CheckMemo && Stage4CheckMessage);
         }
-        else if(Stage >=9 && Stage <= 13)
+        else if (Stage == 9)
         {
             return (Stage5CheckMemo);
+
         }
+        else if (Stage == 20)
+        {
+            return (Stage5CheckMemo && Stage5CheckMessage);
+        }
+        else if (Stage == 17 || Stage == 18 || Stage == 19)
+        {
+            return (Stage5CheckMemo && Stage5CheckCall);
+        }
+        else if (Stage == 21)
+            return (Stage5DeletePhoto);
         return false;
     }
 }

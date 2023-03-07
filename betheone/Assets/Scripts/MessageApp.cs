@@ -17,7 +17,13 @@ public class MessageApp : MonoBehaviour
     {
 
     }
-
+    private void OnDisable()
+    {
+        if(GameStats.Instance.Stage == 21 && !GameStats.Instance.Stage5CheckMessage)
+        {
+            storyManager.HyeJinScreenShot();
+        }        
+    }
     // Update is called once per frame
     void Update()
     {

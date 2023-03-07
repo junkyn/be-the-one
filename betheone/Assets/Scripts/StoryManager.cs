@@ -21,8 +21,13 @@ public class StoryManager : MonoBehaviour
     public Sprite ipconfig;
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
+    [Header("Photos")]
     [SerializeField] GameObject CrimePic;
     [SerializeField] GameObject VictimPic;
+    [SerializeField] GameObject Screenshot;
+
+
+    [SerializeField] GameObject HyejinMessage;
     [Header("Note")]
     [SerializeField] TextMeshProUGUI NoteText;
     [SerializeField] TextMeshProUGUI NoteBut1;
@@ -177,6 +182,7 @@ public class StoryManager : MonoBehaviour
             NoteBut1.text = "";
             NoteBut2.text = "";
             NoteBut3.text = "";
+            StartCoroutine(HyejinEvent());
         }
         else if (GameStats.Instance.Stage.Equals(11))
         {
@@ -200,5 +206,26 @@ public class StoryManager : MonoBehaviour
         }
 
     }
+    IEnumerator HyejinEvent()
+    {
+        yield return new WaitForSeconds(3f);
+        {
+            monologueTrigger.TriggerMonologue("GetMessage");
+            HyejinMessage.SetActive(true);
+
+        }
+
+    }
+    public void HyeJinScreenShot()
+    {
+        monologueTrigger.TriggerMonologue("AfterScreenShot");
+        GameStats.Instance.Stage5CheckMessage = true;
+        Screenshot.SetActive(true);
+    }
+    public void ToDeleteMonol()
+    {
+        monologueTrigger.TriggerMonologue("ToDeletePhoto");
+    }
+
 
 }

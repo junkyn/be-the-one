@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
     [Header("Note")]
     [SerializeField] TextMeshProUGUI noteText;
     [SerializeField] Transform noteButtons;
+    [SerializeField] RectTransform noteButtonsRect;
     [SerializeField] TextMeshProUGUI note1, note2, note3;
     [SerializeField] GameObject noteButton1;
     [SerializeField] GameObject noteButton2;
@@ -323,19 +324,27 @@ public class GameManager : MonoBehaviour
     //활성화되어있을 경우, 휴지통으로 이동합니다.
     public void GalleryBinActivate()
     {
-        if (!galleryBinActivated)
+        if(GameStats.Instance.Stage == 21)
         {
-            galleryBinActivated = true;
+            if (!galleryBinActivated)
+            {
+                galleryBinActivated = true;
 
-            galleryBinButton.DOSizeDelta(new Vector2(65, 35), 0);
-            galleryBinButtonText.text = "휴지통";
-            galleryDeleteButton.SetActive(true);
+                galleryBinButton.DOSizeDelta(new Vector2(65, 35), 0);
+                galleryBinButtonText.text = "휴지통";
+                galleryDeleteButton.SetActive(true);
+            }
+            else
+            {
+                clickBlock.SetActive(true);
+                StartCoroutine(GalleryBinActivateCoroutine());
+            }
         }
         else
         {
-            clickBlock.SetActive(true);
-            StartCoroutine(GalleryBinActivateCoroutine());
+            monologueTrigger.TriggerMonologue("TryBin");    
         }
+
     }
 
     IEnumerator GalleryBinActivateCoroutine()
@@ -433,6 +442,19 @@ public class GameManager : MonoBehaviour
                 if (GameStats.Instance.Stage.Equals(3))
                     StartCoroutine(CallCoroutine("전화가 끊깁니다.", "답장1", "답장2", "답장3", true));
                 break;
+            case "01059242942":
+                if (GameStats.Instance.Stage.Equals(11)|| GameStats.Instance.Stage.Equals(12)||GameStats.Instance.Stage.Equals(13))
+                    StartCoroutine(CallCoroutine("안녕하세요, 이해성씨 맞으시죠? 저는 강예은의 오빠 강예준이라고 합니다." +
+                       "다름이 아니라 동생의 노트북을 봤는데 해성씨와 연락한 기록이 있어서 혹시 아는 게 있으실까 해서 전화드렸습니다." +
+                       "혹시 7월 16일에 저희 여동생과 만나셨을까요?", "네 저와 만났습니다.", "몸이 안좋아 만나지 못했습니다.", "전화 잘못거셨어요."));
+                else if (GameStats.Instance.Stage.Equals(16))
+                    StartCoroutine(CallCoroutine("아 그런가요? 혹시 내일 점심에 시간되시면 저와 커피라도 한잔 하실 수 있을까요?", "네 좋아요.", "죄송해요, 제가 요즘 바빠서요.", ""));
+                else if (GameStats.Instance.Stage.Equals(17))
+                    StartCoroutine(CallCoroutine("아 그런가요?... 하하.. 알겠습니다~","(전화를 끊는다)","",""));
+                else if (GameStats.Instance.Stage.Equals(18))
+                    StartCoroutine(CallCoroutine("네?.. 아 그럴리가 없는데... 죄송합니다!","(전화를 끊는다)","",""));
+                break;
+
         }
     }
 
@@ -462,7 +484,27 @@ public class GameManager : MonoBehaviour
 
     public void CallReply(TextMeshProUGUI reply)
     {
-        if (reply.text != "전화를 끊는다.")
+        if (reply.text.Equals("네 저와 만났습니다."))
+        {
+            GameStats.Instance.Stage = 16;
+        }
+        else if (reply.text.Equals("몸이 안좋아 만나지 못했습니다."))
+        {
+            GameStats.Instance.Stage = 17;
+        }
+        else if (reply.text.Equals("전화 잘못거셨어요."))
+        {
+            GameStats.Instance.Stage = 18;
+        }
+        else if(reply.text.Equals("네 좋아요."))
+        {
+            GameStats.Instance.Stage = 19;
+        }
+        else if(reply.text.Equals("죄송해요, 제가 요즘 바빠서요."))
+        {
+            GameStats.Instance.Stage = 17;
+        }
+        if (reply.text != "(전화를 끊는다)")
         {
             callReply1.transform.parent.GetComponent<Button>().interactable = false;
             callReply2.transform.parent.GetComponent<Button>().interactable = false;
@@ -475,14 +517,16 @@ public class GameManager : MonoBehaviour
             Canvas.ForceUpdateCanvases();
             callScrollRect.verticalNormalizedPosition = 0;
 
-            GameStats.Instance.Stage++;
+            //GameStats.Instance.Stage++;
             CallStart(calling.text);
         }
+
         else
         {
             CallHangUp();
-
-            GameStats.Instance.Stage++;
+            if (!GameStats.Instance.Stage5CheckCall)
+                GameStats.Instance.Stage5CheckCall = true;
+            //GameStats.Instance.Stage++;
         }
     }
 
@@ -526,7 +570,7 @@ public class GameManager : MonoBehaviour
             GameObject newChat = Instantiate(chatPrefab, chatContent);
             newChat.GetComponent<TextMeshProUGUI>().text= chat.sentences[i];
             newChat.transform.DOScale(Vector3.one, 0);
-            if (chat.name.Equals("손지혜"))
+            if (chat.name.Equals("손지혜")|| chat.name.Equals("이혜진"))
             {
                 if ((i % 2).Equals(0))
                     newChat.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.Left;
@@ -568,8 +612,9 @@ public class GameManager : MonoBehaviour
                 chatRectTransform.DOSizeDelta(new Vector2(0, -120), .5f).SetRelative();
                 replyButton.transform.DOMoveY(340, .5f).SetRelative();
                 replyButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "취소";
+                ReplyCase(chatName.text);
 
-                ReplyCase("< 손지혜");
+                //ReplyCase("< 손지혜");
             }
             else
             {
@@ -590,6 +635,7 @@ public class GameManager : MonoBehaviour
                 if (GameStats.Instance.Stage.Equals(2))
                     ReplyGenerate("아니?", "(답장하지 않는다.)", "");
                 break;
+            case "< 이혜진":if (GameStats.Instance.Stage.Equals(10)) ReplyGenerate(":)", "(답장하지 않는다.)", "(스크린샷)"); break;
         }
     }
 
@@ -625,6 +671,29 @@ public class GameManager : MonoBehaviour
                 chatCurrent.sentences.Add("-----------------------\n\n" + reply + "\n\n-----------------------");
                 StartCoroutine(MessageChatUpdate(chatCurrent));
                 GameStats.Instance.Stage=4;
+            }
+        }
+        if (GameStats.Instance.Stage.Equals(10))
+        {
+            if(reply.Equals("(답장하지 않는다.)"))
+            {
+                chatCurrent.replyable = false;
+                GameStats.Instance.Stage = 20;
+                GameStats.Instance.Stage5CheckMessage = true;
+            }
+            else if (reply.Equals("(스크린샷)"))
+            {
+                chatCurrent.replyable = false;
+                GameStats.Instance.Stage = 21;
+            }
+            else
+            {
+                chatCurrent.replyable = false;
+                chatCurrent.sentences.Add("-----------------------\n\n" + reply + "\n\n-----------------------");
+                StartCoroutine(MessageChatUpdate(chatCurrent));
+                GameStats.Instance.Stage = 8;
+                GameStats.Instance.Stage5CheckMessage = true;
+
             }
         }
 
@@ -730,27 +799,13 @@ public class GameManager : MonoBehaviour
         dayText.text = "8월 " + storyManager.day.ToString() + "일";
         switch(storyManager.day % 7)
         {
-            case 1:
-                dateText.text = "화요일";
-                break;
-            case 2:
-                dateText.text = "수요일";
-                break;
-            case 3:
-                dateText.text = "목요일";
-                break;
-            case 4:
-                dateText.text = "금요일";
-                break;
-            case 5:
-                dateText.text = "토요일";
-                break;
-            case 6:
-                dateText.text = "일요일";
-                break;
-            case 0:
-                dateText.text = "월요일";
-                break;
+            case 1: dateText.text = "화요일"; break;
+            case 2: dateText.text = "수요일"; break;
+            case 3: dateText.text = "목요일"; break;
+            case 4: dateText.text = "금요일"; break;
+            case 5: dateText.text = "토요일"; break;
+            case 6: dateText.text = "일요일"; break;
+            case 0: dateText.text = "월요일"; break;
         }
         Lock();
 
@@ -765,7 +820,8 @@ public class GameManager : MonoBehaviour
         note1.text = "";
         note2.text = "";
         note3.text = "";
-        noteButtons.DOMoveY(340, .5f).SetRelative();
+        if(noteButtonsRect.anchoredPosition.y<-120)
+            noteButtons.DOMoveY(340, .5f).SetRelative();
 
         fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
         yield return new WaitForSeconds(.5f);
@@ -887,8 +943,18 @@ public class GameManager : MonoBehaviour
 
 
 
+
             StartCoroutine(NextDay());
         }
+    }
+    public void PhoneCallEventFinder()
+    {
+        StartCoroutine(PhoneCallEvent());
+    }
+    IEnumerator PhoneCallEvent()
+    {
+        yield return new WaitForSeconds(3f);
+        CallIncome("01059242942");
     }
     private void Update()
     {
