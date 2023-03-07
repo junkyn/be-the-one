@@ -22656,8 +22656,8 @@ MonoBehaviour:
   MapImage: {fileID: 783589901}
   hereMap: {fileID: 21300000, guid: 77f17ec152903064aaf465ca284ce6cc, type: 3}
   hongdaeMap: {fileID: 21300000, guid: 276c3ca14b6e3c947b65439d24b3d31f, type: 3}
-  ItaewonMap: {fileID: 0}
-  NonhyeonMap: {fileID: 0}
+  ItaewonMap: {fileID: 21300000, guid: a2e4b4f5e95aac84aa47e52bd31f0523, type: 3}
+  NonhyeonMap: {fileID: 21300000, guid: b6f6c5e29537e344582135a0d635e326, type: 3}
   Internetimg: {fileID: 474105698}
   news1: {fileID: 21300000, guid: 772e6d0b864c1f142afd7cd2aee6857b, type: 3}
   ipconfig: {fileID: 21300000, guid: c8a14f78a39be664182c0fe5883ca5c3, type: 3}
