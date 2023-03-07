@@ -10133,6 +10133,7 @@ GameObject:
   - component: {fileID: 705013563}
   - component: {fileID: 705013565}
   - component: {fileID: 705013564}
+  - component: {fileID: 705013566}
   m_Layer: 5
   m_Name: NoteScreen
   m_TagString: Untagged
@@ -10201,6 +10202,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705013562}
   m_CullTransparentMesh: 1
+--- !u!114 &705013566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705013562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bd5a0af98d0e24d8e820080a8f853c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &706419863
 GameObject:
   m_ObjectHideFlags: 0
@@ -16423,6 +16436,7 @@ MonoBehaviour:
   Stage3CheckGallery: 0
   Stage4CheckMessage: 0
   Stage4CheckMemo: 0
+  Stage5CheckMemo: 0
 --- !u!1 &1178047501
 GameObject:
   m_ObjectHideFlags: 0
@@ -24289,6 +24303,9 @@ MonoBehaviour:
     - "\uC544 \uC774\uB7F0\uAC70\uC600\uAD6C\uB098.."
     - "\uB300\uCCB4 \uB0AE\uC758 \uB098\uB294 \uBB58 \uD558\uACE0 \uB2E4\uB2C8\uB294
       \uAC70\uC9C0?"
+  - stage: OpenDay5
+    sentences:
+    - ...
 --- !u!224 &1862130584
 RectTransform:
   m_ObjectHideFlags: 0

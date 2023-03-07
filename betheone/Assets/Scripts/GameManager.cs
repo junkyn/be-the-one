@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using System.IO;
+using JetBrains.Annotations;
 
 public class GameManager : MonoBehaviour
 {
@@ -654,7 +655,9 @@ public class GameManager : MonoBehaviour
     //메모를 입력합니다.
     public void NoteWrite(TextMeshProUGUI note)
     {
+        
         string noteToWrite = note.text;
+
         if(!note.text.Equals("(남기지 않음)"))
         {
             noteText.text = noteToWrite;
@@ -683,6 +686,14 @@ public class GameManager : MonoBehaviour
         {
             GameStats.Instance.Route = 5;
             GameStats.Instance.Stage4CheckMemo = true;
+        }
+        else if(note.text.Equals("대체 왜 이런 짓을 하는거야?"))
+        {
+            GameStats.Instance.Route = 1;
+        }
+        else if(note.text.Equals("뭘 하면 될까?"))
+        {
+            GameStats.Instance.Route = 2;
         }
         noteButtons.DOMoveY(-340, .5f).SetRelative();
 
@@ -754,7 +765,7 @@ public class GameManager : MonoBehaviour
         note1.text = "";
         note2.text = "";
         note3.text = "";
-
+        noteButtons.DOMoveY(340, .5f).SetRelative();
 
         fadeImage.DOColor(new Color(0, 0, 0, 0), .5f);
         yield return new WaitForSeconds(.5f);
@@ -771,6 +782,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenDaySet()
     {
+        Debug.Log(noteButtons.transform.position.y);
         switch (GameStats.Instance.Stage)
         {
             case 3:
@@ -800,6 +812,26 @@ public class GameManager : MonoBehaviour
                 monologueTrigger.TriggerMonologue("OpenDay4");
                 chatTrigger.Stage4Ashylum();
                 storyManager.Day4Update();
+                break;
+            case 9:
+                monologueTrigger.TriggerMonologue("OpenDay5");
+                storyManager.Day5Update();
+                break;
+            case 10:
+                monologueTrigger.TriggerMonologue("OpenDay5");
+                storyManager.Day5Update();
+                break;
+            case 11:
+                monologueTrigger.TriggerMonologue("OpenDay5");
+                storyManager.Day5Update();
+                break;
+            case 12:
+                monologueTrigger.TriggerMonologue("OpenDay5");
+                storyManager.Day5Update();
+                break;
+            case 13:
+                monologueTrigger.TriggerMonologue("OpenDay5");
+                storyManager.Day5Update();
                 break;
         }
     }
@@ -835,6 +867,20 @@ public class GameManager : MonoBehaviour
                         GameStats.Instance.Stage = 13;
                         break;
                 }
+                GameStats.Instance.Route = 0;
+            }
+            else if(GameStats.Instance.Stage == 9)
+            {
+                switch (GameStats.Instance.Route)
+                {
+                    case 1:
+                        GameStats.Instance.Stage = 13;
+                        break;
+                    case 2:
+                        GameStats.Instance.Stage = 11;
+                        break;
+                }
+                GameStats.Instance.Stage5CheckMemo = false;
                 GameStats.Instance.Route = 0;
             }
 

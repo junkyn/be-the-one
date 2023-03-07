@@ -38,6 +38,7 @@ public class GameStats : MonoBehaviour
     public bool Stage3CheckGallery = false;
     public bool Stage4CheckMessage = false;
     public bool Stage4CheckMemo = false;
+    public bool Stage5CheckMemo = false;
     public bool CheckClear(int stage)
     {
         if(Stage == 3 || Stage == 4)
@@ -55,6 +56,10 @@ public class GameStats : MonoBehaviour
         else if(Stage == 7 || Stage == 8)
         {
             return(Stage4CheckMemo&& Stage4CheckMessage);
+        }
+        else if(Stage >=9 && Stage <= 13)
+        {
+            return (Stage5CheckMemo);
         }
         return false;
     }

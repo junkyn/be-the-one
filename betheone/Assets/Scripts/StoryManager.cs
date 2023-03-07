@@ -163,4 +163,42 @@ public class StoryManager : MonoBehaviour
         monologueTrigger.TriggerMonologue("Day4CheckMes");
         GameStats.Instance.Stage4CheckMessage = true;
     }
+    public void Day5Update()
+    {
+        if (GameStats.Instance.Stage.Equals(9))
+        {
+            NoteText.text = "ㅋㅋ 다 봤구나? 맞아 내가 죽였고 너가 죽였어. 내가 잡히면 너도 잡히는 거라구. 나 좀 도와줄래?";
+            NoteBut1.text = "대체 왜 이런 짓을 하는거야?";
+            NoteBut2.text = "뭘 하면 될까?";
+            NoteBut3.text = "";
+        }
+        else if (GameStats.Instance.Stage.Equals(10))
+        {
+            NoteBut1.text = "";
+            NoteBut2.text = "";
+            NoteBut3.text = "";
+        }
+        else if (GameStats.Instance.Stage.Equals(11))
+        {
+            NoteText.text = "웬만하면 폰을 건들지마.";
+            NoteBut1.text = "";
+            NoteBut2.text = "";
+            NoteBut3.text = "";
+        }
+        else if (GameStats.Instance.Stage.Equals(12))
+        {
+            NoteBut1.text = "";
+            NoteBut2.text = "";
+            NoteBut3.text = "";
+        }
+        else if (GameStats.Instance.Stage.Equals(13))
+        {
+            NoteText.text = "음.. 내가 느낀 쾌감을 너도 못느꼈을 리 없는데.. 계속 이렇게 살 수 없잖아? 어차피 넌 잘 움직이지도 못하는 것 같던데 그냥 내가 하라는 대로 따라만 와.";
+            NoteBut1.text = "";
+            NoteBut2.text = "";
+            NoteBut3.text = "";
+        }
+
+    }
+
 }
