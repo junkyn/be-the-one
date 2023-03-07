@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using System.IO;
 using JetBrains.Annotations;
+//using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
     [Header("Lock Screen")]
     [SerializeField] GameObject clickBlock;
     [SerializeField] RectTransform screenLocked, screenMain;
-
+    [SerializeField] GameObject LockScreen;
     [SerializeField] Image iconLock;
     [SerializeField] Sprite spriteUnlock, spriteLock;
     [SerializeField] TextMeshProUGUI touchToUnlock;
@@ -205,6 +206,8 @@ public class GameManager : MonoBehaviour
                 if (currentMinute >= 60)
                 {
                     currentHour++;
+                    if (currentHour == 4)
+                        storyManager.Ending37();
                     currentMinute = 0;
                 }
                 time = 0;
@@ -382,7 +385,7 @@ public class GameManager : MonoBehaviour
         deletedPhoto.transform.DOScale(Vector3.one, 0);
 
         deletedPhoto.GetComponent<Button>().onClick.AddListener(() => GalleryZoomIn(deletedPhoto.GetComponent<Image>()));
-
+        GameStats.Instance.Stage5DeletePhoto = true;
         Destroy(photoCurrent.gameObject);
     }
 
@@ -411,8 +414,18 @@ public class GameManager : MonoBehaviour
         callScreen.SetActive(true);
         callIncoming.transform.parent.gameObject.SetActive(true);
         callIncoming.text = number;
+        StartCoroutine(NotGetCall());
     }
-
+    IEnumerator NotGetCall()
+    {
+        yield return new WaitForSeconds(10f);
+        if (callIncoming.transform.parent.gameObject.activeSelf)
+        {
+            GameStats.Instance.Stage = 22;
+            GameStats.Instance.Stage5CheckCall = true;
+            callIncoming.transform.parent.gameObject.SetActive(false);
+        } else yield return null;
+    }
     public void CallTake(TextMeshProUGUI number)
     {
         calling.text = number.text;
@@ -426,12 +439,61 @@ public class GameManager : MonoBehaviour
             calling.text = number.text;
             CallStart(number.text);
         }
-    }
+        else
+        {
+            monologueTrigger.TriggerMonologue("cantcall");
+            callScreen.SetActive(false);
+            CallHangUp();
 
+        }
+    }
+    private int PoliceCall = 0;
+    private bool Solution = true;
     public void CallStart(string number)
     {
         switch (number)
         {
+            case "112":
+                if (GameStats.Instance.Stage == 25) {
+                    if (PoliceCall == 0)
+                        StartCoroutine(CallCoroutine("네 안녕하세요 광진경찰서입니다. 무엇을 도와드릴까요", "제가 사람을 죽였어요.", "죄송합니다. 잘못걸었습니다.", ""));
+                    else if (PoliceCall == 1)
+                        StartCoroutine(CallCoroutine("네 그게 무슨 소리죠? 일단 성함부터 말씀해 주시겠어요?", "이해준입니다.", "이해성입니다.", "이해원입니다."));
+                    else if (PoliceCall == 2)
+                        StartCoroutine(CallCoroutine("언제 살해를 했습니까?", "8월 6일", "8월 5일", "8월 4일"));
+                    else if (PoliceCall == 3)
+                        StartCoroutine(CallCoroutine("어디서 살해 하신거죠?", "건대입구", "신촌", "이태원"));
+                    else if (PoliceCall == 4)
+                        StartCoroutine(CallCoroutine("곧 저희 경찰서쪽에서 찾아가겠습니다.", "(전화를 끊는다)", "", ""));
+                }else if(GameStats.Instance.Stage == 26|| GameStats.Instance.Stage == 27)
+                {
+                    if (PoliceCall == 0)
+                        StartCoroutine(CallCoroutine("네 안녕하세요 광진경찰서입니다. 무엇을 도와드릴까요", "곧 사람이 죽어요.", "죄송합니다. 잘못걸었습니다.", ""));
+                    else if (PoliceCall == 1)
+                    {
+                        StartCoroutine(CallCoroutine("네? 그게 무슨 소리죠? 언제 죽는다는 말씀이시죠?", "8월 8일","8월 7일", "8월 6일"));
+
+                    }
+                    else if(PoliceCall == 2)
+                    {
+                        StartCoroutine(CallCoroutine("그럼 어디서 사건이 일어나나요?", "건대입구역", "신논현역", "잠실역"));
+                    }else if(PoliceCall == 3)
+                    {
+                        if(GameStats.Instance.Stage == 27)
+                           StartCoroutine(CallCoroutine("그런데 어떻게 이걸 알고 계시죠?", "감입니다.", "그러게요", "(스크린샷을 보여준다.)"));
+                        else
+                            StartCoroutine(CallCoroutine("그런데 어떻게 이걸 알고 계시죠?", "감입니다.", "그러게요", ""));
+                    }
+                    else if(PoliceCall == 4)
+                    {
+                        StartCoroutine(CallCoroutine("장난전화 걸지 마세요.", "(전화를 끊는다)", "", ""));
+                    }
+                }
+                else
+                {
+                    StartCoroutine(CallCoroutine("네 안녕하세요 광진경찰서입니다. 무엇을 도와드릴까요", "죄송합니다. 잘못걸었습니다.", "",""));
+                }
+                break;
             case "01012345678":
                 if (GameStats.Instance.Stage.Equals(0))
                     StartCoroutine(CallCoroutine("전화 예시입니다.", "답장1", "답장2", "답장3"));
@@ -484,6 +546,7 @@ public class GameManager : MonoBehaviour
 
     public void CallReply(TextMeshProUGUI reply)
     {
+
         if (reply.text.Equals("네 저와 만났습니다."))
         {
             GameStats.Instance.Stage = 16;
@@ -496,15 +559,83 @@ public class GameManager : MonoBehaviour
         {
             GameStats.Instance.Stage = 18;
         }
-        else if(reply.text.Equals("네 좋아요."))
+        else if (reply.text.Equals("네 좋아요."))
         {
             GameStats.Instance.Stage = 19;
+            GameStats.Instance.Stage5CheckCall = true;
         }
-        else if(reply.text.Equals("죄송해요, 제가 요즘 바빠서요."))
+        else if (reply.text.Equals("죄송해요, 제가 요즘 바빠서요."))
         {
             GameStats.Instance.Stage = 17;
         }
-        if (reply.text != "(전화를 끊는다)")
+        else if (reply.text.Equals("제가 사람을 죽였어요."))
+        {
+            PoliceCall = 1;
+        }
+        else if (reply.text.Equals("죄송합니다. 잘못걸었습니다."))
+        {
+            Solution = false;
+            CallHangUp();
+            PoliceCall = 0;
+            if (GameStats.Instance.Stage >= 25 && !GameStats.Instance.Stage6Call)
+                GameStats.Instance.Stage6Call = true;
+        }
+        else if (reply.text.Equals("이해준입니다.") || reply.text.Equals("이해원입니다."))
+        {
+            Solution = false;
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("이해성입니다."))
+        {
+            PoliceCall++;
+        }
+        else if (GameStats.Instance.Stage == 25 && (reply.text.Equals("8월 6일") || reply.text.Equals("8월 4일")))
+        {
+
+            Solution = false;
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("8월 5일"))
+        {
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("건대입구") || reply.text.Equals("신촌"))
+        {
+            Solution = false;
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("이태원"))
+            PoliceCall++;
+        else if (reply.text.Equals("곧 사람이 죽어요."))
+            PoliceCall++;
+        else if (reply.text.Equals("8월 7일") || reply.text.Equals("8월 8일"))
+        {
+            Solution = false;
+            PoliceCall++;
+        }
+        else if ((GameStats.Instance.Stage == 26 || GameStats.Instance.Stage == 27)&& reply.text.Equals("8월 6일"))
+        {
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("건대입구역") || reply.text.Equals("잠실역"))
+        {
+            Solution = false;
+            PoliceCall++;
+        }
+        else if (reply.text.Equals("신논현역"))
+            PoliceCall++;
+        else if (reply.text.Equals("감입니다.") || reply.text.Equals("그러게요"))
+        {
+            Solution = false;
+            PoliceCall ++;
+        }else if(reply.text.Equals("(스크린샷을 보여준다.)"))
+        {
+            CallHangUp();
+            PoliceCall = 0;
+            if (GameStats.Instance.Stage >= 25 && !GameStats.Instance.Stage6Call)
+                GameStats.Instance.Stage6Call = true;
+        }
+    if (reply.text != "(전화를 끊는다)")
         {
             callReply1.transform.parent.GetComponent<Button>().interactable = false;
             callReply2.transform.parent.GetComponent<Button>().interactable = false;
@@ -527,6 +658,9 @@ public class GameManager : MonoBehaviour
             if (!GameStats.Instance.Stage5CheckCall)
                 GameStats.Instance.Stage5CheckCall = true;
             //GameStats.Instance.Stage++;
+            PoliceCall = 0;
+            if (GameStats.Instance.Stage >= 25 && !GameStats.Instance.Stage6Call)
+                GameStats.Instance.Stage6Call = true;
         }
     }
 
@@ -538,6 +672,7 @@ public class GameManager : MonoBehaviour
 
         monologueTrigger.TriggerMonologue("HangUp");
         callEnd.SetActive(true);
+        CallReset();
     }
 
     public void CallReset()
@@ -789,6 +924,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator NextDay()
     {
+        GameStats.Instance.Stage5DeletePhoto = false;
+        GameStats.Instance.Stage5CheckCall = false;
+        GameStats.Instance.Stage5CheckMemo = false;
+        GameStats.Instance.Stage5CheckMessage = false;
+        GameStats.Instance.Stage4CheckMemo = false;
+        GameStats.Instance.Stage4CheckMessage = false;
         fadeImage.gameObject.SetActive(true);
         fadeImage.DOColor(new Color(0, 0, 0, 1), 3f);
         yield return new WaitForSeconds(3.5f);
@@ -889,6 +1030,31 @@ public class GameManager : MonoBehaviour
                 monologueTrigger.TriggerMonologue("OpenDay5");
                 storyManager.Day5Update();
                 break;
+            case 17: case 18: case 19: case 20: case 21: case 22: storyManager.Day6Update(); break;
+            case 29:
+                storyManager.Ending29();
+                break;
+            case 30:
+                storyManager.Ending30();
+                break;
+            case 31:
+                if (!Solution)
+                    storyManager.Ending31();
+                else
+                    storyManager.Ending32();
+                break;
+            case 32:
+                storyManager.Ending33();
+                break;
+            case 33:
+                if (!Solution)
+                    storyManager.Ending34();
+                else
+                    storyManager.Ending35();
+                break;
+            case 34:
+                storyManager.Ending36();
+                break;
         }
     }
     public void CheckEnding()
@@ -903,9 +1069,9 @@ public class GameManager : MonoBehaviour
                 GameStats.Instance.Stage = 6;
             else if (GameStats.Instance.Stage == 3)
                 GameStats.Instance.Stage = 5;
-            else if(GameStats.Instance.Stage == 8 || GameStats.Instance.Stage == 7)
+            else if (GameStats.Instance.Stage == 8 || GameStats.Instance.Stage == 7)
             {
-                switch(GameStats.Instance.Route)
+                switch (GameStats.Instance.Route)
                 {
                     case 1:
                         GameStats.Instance.Stage = 9;
@@ -925,7 +1091,7 @@ public class GameManager : MonoBehaviour
                 }
                 GameStats.Instance.Route = 0;
             }
-            else if(GameStats.Instance.Stage == 9)
+            else if (GameStats.Instance.Stage == 9)
             {
                 switch (GameStats.Instance.Route)
                 {
@@ -939,7 +1105,18 @@ public class GameManager : MonoBehaviour
                 GameStats.Instance.Stage5CheckMemo = false;
                 GameStats.Instance.Route = 0;
             }
-
+            else if (GameStats.Instance.Stage == 23)
+                GameStats.Instance.Stage = 29;
+            else if (GameStats.Instance.Stage == 24)
+                GameStats.Instance.Stage = 30;
+            else if (GameStats.Instance.Stage == 25)
+                GameStats.Instance.Stage = 31;
+            else if (GameStats.Instance.Stage == 26)
+                GameStats.Instance.Stage = 32;
+            else if (GameStats.Instance.Stage == 27)
+                GameStats.Instance.Stage = 33;
+            else if (GameStats.Instance.Stage == 28)
+                GameStats.Instance.Stage = 34;
 
 
 
@@ -958,10 +1135,11 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!Monologue.activeSelf && !GalleryScreen.activeSelf && !MapScreen.activeSelf && !MessageScreen.activeSelf && !InternetScreen.activeSelf && !NoteScreen.activeSelf)
+        if(!LockScreen.activeSelf&&!Monologue.activeSelf && !GalleryScreen.activeSelf && !MapScreen.activeSelf && !MessageScreen.activeSelf && !InternetScreen.activeSelf && !NoteScreen.activeSelf)
              CheckEnding();
-
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
             CallIncome("01012345678");
+        */
     }
 }

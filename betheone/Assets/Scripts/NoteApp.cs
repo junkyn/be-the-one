@@ -14,6 +14,8 @@ public class NoteApp : MonoBehaviour
         {
             GameStats.Instance.Stage5CheckMemo = true;
         }
+        if (GameStats.Instance.Stage >= 23 && !GameStats.Instance.Stage6CheckMemo)
+            GameStats.Instance.Stage6CheckMemo = true;
     }
     private void OnDisable()
     {
@@ -21,5 +23,6 @@ public class NoteApp : MonoBehaviour
         {
             gameManager.PhoneCallEventFinder();
         }
+
     }
 }

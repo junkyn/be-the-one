@@ -11,6 +11,8 @@ public class InternetApp : MonoBehaviour
         {
             storyManager.Stage3CheckInternet();
         }
+        if (GameStats.Instance.Stage >= 23 && !GameStats.Instance.Stage6CheckNews)
+            GameStats.Instance.Stage6CheckNews = true;
     }
     // Start is called before the first frame update
     void Start()

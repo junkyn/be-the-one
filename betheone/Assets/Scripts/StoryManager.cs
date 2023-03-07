@@ -14,18 +14,32 @@ public class StoryManager : MonoBehaviour
     public Image MapImage;
     public Sprite hereMap;
     public Sprite hongdaeMap;
-
+    public Sprite ItaewonMap;
+    public Sprite NonhyeonMap;
     [Header("Internet")]
     public Image Internetimg;
     public Sprite news1;
     public Sprite ipconfig;
+    public Sprite news2;
+
+    [Header("Ending")]
+    [SerializeField] GameObject EndingScreen;
+    public Image EndingImg;
+    public Sprite Ending1;
+    public Sprite Ending2;
+    public Sprite Ending3;
+    public Sprite Ending4;
+    public Sprite Ending5;
+    public Sprite Ending6;
+    public Sprite Ending7;
+    public Sprite Ending8;
     [SerializeField] MonologueTrigger monologueTrigger;
     [SerializeField] GameObject JiHyeMessage;
     [Header("Photos")]
     [SerializeField] GameObject CrimePic;
     [SerializeField] GameObject VictimPic;
     [SerializeField] GameObject Screenshot;
-
+    
 
     [SerializeField] GameObject HyejinMessage;
     [Header("Note")]
@@ -116,10 +130,20 @@ public class StoryManager : MonoBehaviour
             }
             MapImage.sprite = hongdaeMap;
         }
-        else if(option.value.Equals(0))
+        else if (option.value.Equals(0))
         {
             MapImage.sprite = hereMap;
         }
+        else if (option.value.Equals(2))
+        {
+            if (GameStats.Instance.Stage == 25)
+                MapImage.sprite = ItaewonMap;
+            else if(GameStats.Instance.Stage == 26 || GameStats.Instance.Stage == 27)
+            {
+                MapImage.sprite = NonhyeonMap;
+            }
+        }
+
     }
     public void Stage3CheckInternet()
     {
@@ -226,6 +250,106 @@ public class StoryManager : MonoBehaviour
     {
         monologueTrigger.TriggerMonologue("ToDeletePhoto");
     }
+    public void Day6Update()
+    {
+        TMP_Dropdown.OptionData nonhyeon = new TMP_Dropdown.OptionData();
+        nonhyeon.text = "신논현역";
+        nonhyeon.image = null;
+        switch (GameStats.Instance.Stage)
+        {
+            case 17:
+                NoteText.text = "경찰이 날 찾아왔어. 어젯밤에 대체 뭘 한거야? 이젠 더이상 못봐주겠어.";
+                Internetimg.sprite = news2;
+                GameStats.Instance.Stage = 23;
+                break;
+            case 18:
+                Internetimg.sprite = news2;
+                GameStats.Instance.Stage = 24;
+                break;
+            case 19:
+                monologueTrigger.TriggerMonologue("call112");
+                NoteText.text = "미친거야? 가만히 있는게 그렇게 힘드니? 처리하느라 힘들었네.";
+                Internetimg.sprite = news2;
+                GameStats.Instance.Stage = 25;
+
+                TMP_Dropdown.OptionData Itaewon = new TMP_Dropdown.OptionData();
+                Itaewon.text = "이태원역";
+                Itaewon.image = null;
+                dropdown.options.Add(Itaewon);
+                break;
+            case 20:
+                Internetimg.sprite = news2;
+                GameStats.Instance.Stage = 26;
+
+                dropdown.options.Add(nonhyeon);
+                break;
+            case 21:
+                monologueTrigger.TriggerMonologue("call112");
+
+                Internetimg.sprite = news2;
+                GameStats.Instance.Stage = 27;
+
+                dropdown.options.Add(nonhyeon);
+                break;
+            case 22:
+                GameStats.Instance.Stage = 28;
+
+                Internetimg.sprite = news2;
+                break;
+        }
+    }
+    public void Ending29()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending2;
+    }
+    public void Ending30()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending3;
+
+    }
+    public void Ending31()
+    {
+        EndingScreen.SetActive(true);
+        
+        EndingImg.sprite = Ending4;
+
+    }
+    public void Ending32()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending5;
+
+    }
+    public void Ending33()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending6;
 
 
+    }
+    public void Ending34()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending6;
+
+    }
+    public void Ending35()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending7;
+
+    }
+    public void Ending36()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending8;
+
+    }
+    public void Ending37()
+    {
+        EndingScreen.SetActive(true);
+        EndingImg.sprite = Ending1;
+    }
 }
