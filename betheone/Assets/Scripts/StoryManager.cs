@@ -267,7 +267,7 @@ public class StoryManager : MonoBehaviour
                 GameStats.Instance.Stage = 24;
                 break;
             case 19:
-                monologueTrigger.TriggerMonologue("call112");
+                monologueTrigger.TriggerMonologue("fellsome");
                 NoteText.text = "미친거야? 가만히 있는게 그렇게 힘드니? 처리하느라 힘들었네.";
                 Internetimg.sprite = news2;
                 GameStats.Instance.Stage = 25;

@@ -927,6 +927,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator NextDay()
     {
+        if (callScreen.activeSelf)
+            callScreen.SetActive(false);
         GameStats.Instance.Stage5DeletePhoto = false;
         GameStats.Instance.Stage5CheckCall = false;
         GameStats.Instance.Stage5CheckMemo = false;
@@ -937,7 +939,7 @@ public class GameManager : MonoBehaviour
         fadeImage.DOColor(new Color(0, 0, 0, 1), 3f);
         yield return new WaitForSeconds(3.5f);
 
-        CallHangUp();
+        //CallHangUp();
         SaveGame();
 
         storyManager.day++;
