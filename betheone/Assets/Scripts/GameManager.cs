@@ -428,6 +428,9 @@ public class GameManager : MonoBehaviour
     }
     public void CallTake(TextMeshProUGUI number)
     {
+        foreach (Transform chats in callContent)
+            Destroy(chats.gameObject);
+
         calling.text = number.text;
         CallStart(number.text);
     }
@@ -436,6 +439,9 @@ public class GameManager : MonoBehaviour
     {
         if (numbersEnable.Contains(number.text))
         {
+            foreach (Transform chats in callContent)
+                Destroy(chats.gameObject);
+
             calling.text = number.text;
             CallStart(number.text);
         }
@@ -677,9 +683,6 @@ public class GameManager : MonoBehaviour
 
     public void CallReset()
     {
-        foreach (Transform chats in callContent)
-            Destroy(chats.gameObject);
-
         callScreen.SetActive(false);
         calling.transform.parent.gameObject.SetActive(false);
     }
@@ -934,6 +937,7 @@ public class GameManager : MonoBehaviour
         fadeImage.DOColor(new Color(0, 0, 0, 1), 3f);
         yield return new WaitForSeconds(3.5f);
 
+        CallHangUp();
         SaveGame();
 
         storyManager.day++;
