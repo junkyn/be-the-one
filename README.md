@@ -1,6 +1,8 @@
 # Be the one
 Be the one is a 2D Unity game project in the mystery genre, where the game progress is driven by the protagonist's monologues and choices on the mobile phone's user interface.
 
+This project was with [azoththecreator](https://github.com/azoththecreator)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 ## Development Progress
